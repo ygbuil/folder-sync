@@ -5,7 +5,7 @@ from pathlib import Path
 import objects.main_modules as m
 
 
-def main(master_root_path, clone_root_path):
+def main(master_root_path, clone_root_path, operating_system):
     '''
     Entire pipeline. Checks differences between master and clone folder and
     sets clone to be in the same status as master.
@@ -16,6 +16,8 @@ def main(master_root_path, clone_root_path):
         Root path of master folder.
     clone_root_path : pathlib object
         Root path of clone folder.
+    operating_system : str
+        Type of OS. Options: 'windows' or 'mac'.
 
     Returns
     -------
@@ -31,7 +33,7 @@ def main(master_root_path, clone_root_path):
     # delete clone files not present in master
     m.delete_clone_files(
         master_sub_paths=master_sub_paths, clone_sub_paths=clone_sub_paths,
-        clone_root_path=clone_root_path
+        clone_root_path=clone_root_path, operating_system=operating_system
     )
 
     # copy files present in master but not in clone
@@ -48,6 +50,7 @@ def main(master_root_path, clone_root_path):
 
 if __name__ == '__main__':
     main(
-        master_root_path = Path('C:/Users/llorenc.buil/master'),
-        clone_root_path = Path('C:/Users/llorenc.buil/clone')
+        master_root_path=Path('C:/Users/llorenc.buil/master'),
+        clone_root_path=Path('C:/Users/llorenc.buil/clone'),
+        operating_system='mac'
     )

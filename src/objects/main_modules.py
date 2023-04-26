@@ -28,7 +28,9 @@ def get_sub_paths(master_root_path, clone_root_path):
     return master_sub_paths, clone_sub_paths
 
 
-def delete_clone_files(master_sub_paths, clone_sub_paths, clone_root_path):
+def delete_clone_files(
+    master_sub_paths, clone_sub_paths, clone_root_path, operating_system
+):
     '''
     Delete files present in clone but missing in master.
 
@@ -40,6 +42,8 @@ def delete_clone_files(master_sub_paths, clone_sub_paths, clone_root_path):
         Dictionary containing sub paths for clone.
     clone_root_path : pathlib object
         Root path of clone folder.
+    operating_system : str
+        Type of OS. Options: 'windows' or 'mac'.
 
     Returns
     -------
@@ -112,6 +116,6 @@ def test_if_sucessful(master_root_path, clone_root_path):
     clone_sub_paths = o.get_sub_paths(path=clone_root_path)
 
     if master_sub_paths == clone_sub_paths:
-        print('Process sucessful! both folder are now equal.')
+        print('Process successful! both folder are now equal.')
     else:
         print('Something went wrong. Master and clone folders are not equal.')

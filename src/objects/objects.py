@@ -77,7 +77,7 @@ def get_paths_paths_to_delete(
     return paths_to_delete
 
 
-def delete_paths(paths_to_delete):
+def delete_paths(paths_to_delete, operating_system):
     '''
     Executes commands to delete the paths_to_delete.
 
@@ -85,6 +85,8 @@ def delete_paths(paths_to_delete):
     ----------
     paths_to_delete : dict
         Dictionary containing the directories and files to delete.
+    operating_system : str
+        Type of OS. Options: 'windows' or 'mac'.
 
     Returns
     -------
@@ -94,12 +96,15 @@ def delete_paths(paths_to_delete):
 
     # delete files
     for f in paths_to_delete['files']:
-        os.system(f'del /f /q {f}')
+        os.system(f'rm {f}')
         print(f'Deleted file: {f}')
 
     # delete directories
     for d in paths_to_delete['dirs']:
-        os.system(f'rmdir /s /q {d}')
+        if operating_system == 'windows':
+            os.system(f'rmdir /s /q {d}')
+        elif operating_system == 'mac':
+            os.system(f'rmdir {f}')
         print(f'Deleted directory: {d}')
 
 
