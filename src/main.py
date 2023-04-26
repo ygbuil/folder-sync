@@ -1,10 +1,13 @@
+# libraries
+from pathlib import Path
+
 # local libraries
 import objects.main_modules as m
 
 
 def main(master_root_path, clone_root_path):
     # get all sub paths
-    master_sub_paths, clone_sub_paths = m.get_subpaths(
+    master_sub_paths, clone_sub_paths = m.get_sub_paths(
         master_root_path=master_root_path, clone_root_path=clone_root_path
     )
 
@@ -28,6 +31,6 @@ def main(master_root_path, clone_root_path):
 
 if __name__ == '__main__':
     main(
-        master_root_path = 'C:\\Users\\llorenc.buil\\master',
-        clone_root_path = 'C:\\Users\\llorenc.buil\\clone'
+        master_root_path = Path('C:/Users/llorenc.buil/master'),
+        clone_root_path = Path('C:/Users/llorenc.buil/clone')
     )
