@@ -56,7 +56,9 @@ def delete_clone_files(
         clone_root_path=clone_root_path
     )
 
-    o.delete_paths(paths_to_delete=paths_to_delete)
+    o.delete_paths(
+        paths_to_delete=paths_to_delete, operating_system=operating_system
+    )
 
 
 def copy_from_master_to_clone(

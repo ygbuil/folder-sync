@@ -104,7 +104,7 @@ def delete_paths(paths_to_delete, operating_system):
         if operating_system == 'windows':
             os.system(f'rmdir /s /q {d}')
         elif operating_system == 'mac':
-            os.system(f'rmdir {f}')
+            os.system(f'rmdir {d}')
         print(f'Deleted directory: {d}')
 
 
