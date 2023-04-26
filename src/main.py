@@ -6,6 +6,23 @@ import objects.main_modules as m
 
 
 def main(master_root_path, clone_root_path):
+    '''
+    Entire pipeline. Checks differences between master and clone folder and
+    sets clone to be in the same status as master.
+
+    Parameters
+    ----------
+    master_root_path : pathlib object
+        Root path of master folder.
+    clone_root_path : pathlib object
+        Root path of clone folder.
+
+    Returns
+    -------
+    None.
+
+    '''
+
     # get all sub paths
     master_sub_paths, clone_sub_paths = m.get_sub_paths(
         master_root_path=master_root_path, clone_root_path=clone_root_path
@@ -24,7 +41,7 @@ def main(master_root_path, clone_root_path):
     )
 
     # check if both folders are equal
-    m.check_if_sucessful(
+    m.test_if_sucessful(
         master_root_path=master_root_path, clone_root_path=clone_root_path
     )
 
