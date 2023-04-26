@@ -24,7 +24,7 @@ def main(master_root_path, clone_root_path):
     )
 
     # check if both folders are equal
-    m.check_if_both_folders_are_equal(
+    m.check_if_sucessful(
         master_root_path=master_root_path, clone_root_path=clone_root_path
     )
 

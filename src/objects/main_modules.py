@@ -37,7 +37,7 @@ def copy_from_master_to_clone(
     )
 
 
-def check_if_both_folders_are_equal(master_root_path, clone_root_path):
+def check_if_sucessful(master_root_path, clone_root_path):
     master_sub_paths = o.get_sub_paths(path=master_root_path)
     clone_sub_paths = o.get_sub_paths(path=clone_root_path)
 
