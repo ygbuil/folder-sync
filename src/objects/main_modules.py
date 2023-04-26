@@ -120,6 +120,6 @@ def test_if_sucessful(master_root_path, clone_root_path):
     clone_sub_paths = o.get_sub_paths(path=clone_root_path)
 
     if master_sub_paths == clone_sub_paths:
-        print('Process successful! both folder are now equal.')
+        print('Process successful! both folders are now equal.')
     else:
         print('Something went wrong. Master and clone folders are not equal.')
