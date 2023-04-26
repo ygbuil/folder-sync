@@ -39,7 +39,7 @@ def main(master_root_path, clone_root_path, operating_system):
     # copy files present in master but not in clone
     m.copy_from_master_to_clone(
         master_root_path=master_root_path, clone_root_path=clone_root_path,
-        master_sub_paths=master_sub_paths
+        master_sub_paths=master_sub_paths, operating_system=operating_system
     )
 
     # check if both folders are equal
@@ -52,5 +52,5 @@ if __name__ == '__main__':
     main(
         master_root_path=Path('C:/Users/llorenc.buil/master'),
         clone_root_path=Path('C:/Users/llorenc.buil/clone'),
-        operating_system='mac'
+        operating_system='windows'
     )

@@ -62,19 +62,21 @@ def delete_clone_files(
 
 
 def copy_from_master_to_clone(
-    master_root_path, clone_root_path, master_sub_paths
+    master_root_path, clone_root_path, master_sub_paths, operating_system
 ):
     '''
     Copy files present in master but missing in clone (from master to clone).
 
     Parameters
     ----------
-    master_root_path : TYPE
-        DESCRIPTION.
-    clone_root_path : TYPE
-        DESCRIPTION.
-    master_sub_paths : TYPE
-        DESCRIPTION.
+    master_root_path : pathlib object
+        Root path of master folder.
+    clone_root_path : pathlib object
+        Root path of clone folder.
+    master_sub_paths : dict
+        Dictionary containing sub paths for master.
+    operating_system : str
+        Type of OS. Options: 'windows' or 'mac'.
 
     Returns
     -------
@@ -92,7 +94,7 @@ def copy_from_master_to_clone(
 
     o.copy_paths(
         master_root_path=master_root_path, clone_root_path=clone_root_path,
-        paths_to_copy=paths_to_copy
+        paths_to_copy=paths_to_copy, operating_system=operating_system
     )
 
 
