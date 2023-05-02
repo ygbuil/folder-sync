@@ -1,5 +1,6 @@
 # libraries
 import os
+import shutil
 
 
 def get_sub_paths(path):
@@ -18,11 +19,15 @@ def get_sub_paths(path):
 
     '''
 
+    # the "and not p.name.startswith('.')" condition is to avoid detecting
+    # system files on macOS and Unix-based systems
     path_dirs = [
-        p.relative_to(path) for p in path.glob('**/*') if p.is_dir()
+        p.relative_to(path) for p in path.glob('**/*') if p.is_dir() and not
+        p.name.startswith('.')
     ]
     path_files = [
-        p.relative_to(path) for p in path.glob('**/*') if p.is_file()
+        p.relative_to(path) for p in path.glob('**/*') if p.is_file() and not
+        p.name.startswith('.')
     ]
 
     path_dirs.sort()
@@ -77,7 +82,7 @@ def get_paths_paths_to_delete(
     return paths_to_delete
 
 
-def delete_paths(paths_to_delete, operating_system):
+def delete_paths(paths_to_delete):
     '''
     Executes commands to delete the paths_to_delete.
 
@@ -85,8 +90,6 @@ def delete_paths(paths_to_delete, operating_system):
     ----------
     paths_to_delete : dict
         Dictionary containing the directories and files to delete.
-    operating_system : str
-        Type of OS. Options: 'windows' or 'mac'.
 
     Returns
     -------
@@ -96,18 +99,12 @@ def delete_paths(paths_to_delete, operating_system):
 
     # delete files
     for f in paths_to_delete['files']:
-        if operating_system == 'windows':
-            os.system(f'del {f}')
-        elif operating_system == 'mac':
-            os.system(f'rm {f}')
+        os.remove(f)
         print(f'Deleted file: {f}')
 
     # delete directories
     for d in paths_to_delete['dirs']:
-        if operating_system == 'windows':
-            os.system(f'rmdir /q {d}')
-        elif operating_system == 'mac':
-            os.system(f'rmdir {d}')
+        shutil.rmtree(d)
         print(f'Deleted directory: {d}')
 
 
@@ -147,9 +144,7 @@ def get_paths_to_copy(master_sub_paths, clone_sub_paths):
     return paths_to_copy
 
 
-def copy_paths(
-    master_root_path, clone_root_path, paths_to_copy, operating_system
-):
+def copy_paths(master_root_path, clone_root_path, paths_to_copy):
     '''
     Executes commands to copy the paths_to_copy.
 
@@ -161,8 +156,6 @@ def copy_paths(
         Root path of clone folder.
     paths_to_copy : dict
         Dictionary containing the directories and files to delete.
-    operating_system : str
-        Type of OS. Options: 'windows' or 'mac'.
 
     Returns
     -------
@@ -171,12 +164,9 @@ def copy_paths(
     '''
 
     for d in paths_to_copy['dirs']:
-        os.system(f'mkdir {clone_root_path/d}')
+        os.makedirs(clone_root_path/d)
         print(f'Created directory: {d}')
 
     for f in paths_to_copy['files']:
-        if operating_system == 'windows':
-            os.system(f'copy {master_root_path/f} {clone_root_path/f}')
-        elif operating_system == 'mac':
-            os.system(f'cp {master_root_path/f} {clone_root_path/f}')
+        shutil.copy(master_root_path/f, clone_root_path/f)
         print(f'Copied file: {f}')

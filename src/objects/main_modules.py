@@ -28,9 +28,7 @@ def get_sub_paths(master_root_path, clone_root_path):
     return master_sub_paths, clone_sub_paths
 
 
-def delete_clone_files(
-    master_sub_paths, clone_sub_paths, clone_root_path, operating_system
-):
+def delete_clone_files(master_sub_paths, clone_sub_paths, clone_root_path):
     '''
     Delete files present in clone but missing in master.
 
@@ -42,8 +40,6 @@ def delete_clone_files(
         Dictionary containing sub paths for clone.
     clone_root_path : pathlib object
         Root path of clone folder.
-    operating_system : str
-        Type of OS. Options: 'windows' or 'mac'.
 
     Returns
     -------
@@ -51,18 +47,18 @@ def delete_clone_files(
 
     '''
 
+    # get lists of paths to delete
     paths_to_delete = o.get_paths_paths_to_delete(
         master_sub_paths=master_sub_paths, clone_sub_paths=clone_sub_paths,
         clone_root_path=clone_root_path
     )
 
-    o.delete_paths(
-        paths_to_delete=paths_to_delete, operating_system=operating_system
-    )
+    # delete paths
+    o.delete_paths(paths_to_delete=paths_to_delete)
 
 
 def copy_from_master_to_clone(
-    master_root_path, clone_root_path, master_sub_paths, operating_system
+    master_root_path, clone_root_path, master_sub_paths
 ):
     '''
     Copy files present in master but missing in clone (from master to clone).
@@ -75,8 +71,6 @@ def copy_from_master_to_clone(
         Root path of clone folder.
     master_sub_paths : dict
         Dictionary containing sub paths for master.
-    operating_system : str
-        Type of OS. Options: 'windows' or 'mac'.
 
     Returns
     -------
@@ -94,7 +88,7 @@ def copy_from_master_to_clone(
 
     o.copy_paths(
         master_root_path=master_root_path, clone_root_path=clone_root_path,
-        paths_to_copy=paths_to_copy, operating_system=operating_system
+        paths_to_copy=paths_to_copy
     )
 
 
