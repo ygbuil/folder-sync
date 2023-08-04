@@ -48,6 +48,6 @@ def main(master_root_path, clone_root_path):
 
 if __name__ == '__main__':
     main(
-        master_root_path=Path('/Users/Llorensbf/Desktop/master'),
+        master_root_path=Path('/Users/ygbuil/Desktop/master'),
         clone_root_path=Path('/Volumes/hard_drive/clone')
     )
