@@ -1,9 +1,11 @@
 import json
+
 from tkinter import filedialog
+from constants import *
 
 
 def update_label_cache(cache):
-    with open("gui/label_cache.json", "w") as cache_file:
+    with open(LABEL_CACHE, "w") as cache_file:
         json.dump(cache, cache_file)
 
 
@@ -20,7 +22,3 @@ def choose_directory(self, cache):
             cache["destination"] = self.selected_directory
 
         update_label_cache(cache)
-
-
-def start_backup(x):
-    print(x)
