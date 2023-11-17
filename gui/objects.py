@@ -1,7 +1,10 @@
 import customtkinter as ctk
 
+
 class Frame:
-    def __init__(self, frame, frame_type, selected_directory_label=None, selected_directory=None):
+    def __init__(
+        self, frame, frame_type, selected_directory_label=None, selected_directory=None
+    ):
         self.frame = frame
         self.frame_type = frame_type
         self.selected_directory_label = selected_directory_label
@@ -11,17 +14,12 @@ class Frame:
     def create_frame(cls, window, frame_type, x_frame, y_frame):
         frame = ctk.CTkFrame(window)
         frame.pack(pady=20)
-        frame.place(x=x_frame,y=y_frame)
+        frame.place(x=x_frame, y=y_frame)
 
         return cls(frame=frame, frame_type=frame_type)
 
     def add_button(self, button_text, command, **kwargs):
-        button = ctk.CTkButton(
-            self.frame,
-            text=button_text,
-            command=command,
-            **kwargs
-        )
+        button = ctk.CTkButton(self.frame, text=button_text, command=command, **kwargs)
         button.pack(side="left", padx=0)
 
     def add_label(self, label_text):
@@ -29,8 +27,7 @@ class Frame:
         self.selected_directory_label.pack(side="left", padx=10)
 
 
-
-#def update_cache()
+# def update_cache()
 
 
 def set_window_geometry(window):
@@ -40,4 +37,3 @@ def set_window_geometry(window):
     y_position = (window.winfo_screenheight() - window_height) // 2
 
     window.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
-
