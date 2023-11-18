@@ -1,5 +1,4 @@
 import os
-from backend import main
 import pytest
 
 
@@ -34,8 +33,3 @@ def test_origin_folder_creation(origin_folder, subsequent_dir):
 )
 def test_destination_folder_creation(destination_folder, subsequent_dir):
     assert os.path.exists(os.path.join(destination_folder, *subsequent_dir))
-
-
-@pytest.mark.parametrize("x", [1, 2, 3])
-def test_dummy(x):
-    assert x in [1, 2, 3]
