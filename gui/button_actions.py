@@ -22,7 +22,7 @@ def btn_function(app, button, progress_bar):
     button.configure(state="disabled")
 
     # show progressbar
-    progress_bar.pack(pady=40)
+    progress_bar.pack(padx=X_PROGRESSBAR, pady=Y_PROGRESSBAR)
 
     # start updating progressbar
     update_progressbar(

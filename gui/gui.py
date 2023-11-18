@@ -10,9 +10,12 @@ with open(LABEL_CACHE, "r") as json_file:
 
 
 app = ctk.CTk()
-app.title("Smart Backup")
+app.title(APP_NAME)
 
-title = ctk.CTkLabel(app, text="Smart Backup")
+# outter_frame = ctk.CTkFrame(app)
+# outter_frame.pack(padx=20, pady=20, fill="both", expand=True)
+
+title = ctk.CTkLabel(app, text=APP_NAME, font=("TkDefaultFont", 20))
 title.pack(pady=10, padx=10)
 
 
