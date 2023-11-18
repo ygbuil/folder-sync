@@ -1,10 +1,4 @@
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0 # run "pre-commit autoupdate" to update
-    hooks:
-    - id: trailing-whitespace
-    - id: end-of-file-fixer
-
   - repo: https://github.com/psf/black
     rev: 23.11.0
     hooks:
