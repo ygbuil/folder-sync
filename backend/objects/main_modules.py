@@ -1,16 +1,16 @@
 # local libraries
-import objects.objects as o
+from . import objects
 
 
-def get_sub_paths(master_root_path, clone_root_path):
-    '''
+def get_sub_paths(origin_root_path, destination_root_path):
+    """
     Get all the sub paths inside path.
 
     Parameters
     ----------
-    master_root_path : pathlib object
+    origin_root_path : pathlib object
         Root path of master folder.
-    clone_root_path : pathlib object
+    destination_root_path : pathlib object
         Root path of clone folder.
 
     Returns
@@ -20,16 +20,16 @@ def get_sub_paths(master_root_path, clone_root_path):
     clone_sub_paths : dict
         Dictionary containing sub paths for clone.
 
-    '''
+    """
 
-    master_sub_paths = o.get_sub_paths(path=master_root_path)
-    clone_sub_paths = o.get_sub_paths(path=clone_root_path)
+    master_sub_paths = objects.get_sub_paths(path=origin_root_path)
+    clone_sub_paths = objects.get_sub_paths(path=destination_root_path)
 
     return master_sub_paths, clone_sub_paths
 
 
-def delete_clone_files(master_sub_paths, clone_sub_paths, clone_root_path):
-    '''
+def delete_clone_files(master_sub_paths, clone_sub_paths, destination_root_path):
+    """
     Delete files present in clone but missing in master.
 
     Parameters
@@ -38,36 +38,37 @@ def delete_clone_files(master_sub_paths, clone_sub_paths, clone_root_path):
         Dictionary containing sub paths for master.
     clone_sub_paths : dict
         Dictionary containing sub paths for clone.
-    clone_root_path : pathlib object
+    destination_root_path : pathlib object
         Root path of clone folder.
 
     Returns
     -------
     None.
 
-    '''
+    """
 
     # get lists of paths to delete
-    paths_to_delete = o.get_paths_paths_to_delete(
-        master_sub_paths=master_sub_paths, clone_sub_paths=clone_sub_paths,
-        clone_root_path=clone_root_path
+    paths_to_delete = objects.get_paths_paths_to_delete(
+        master_sub_paths=master_sub_paths,
+        clone_sub_paths=clone_sub_paths,
+        destination_root_path=destination_root_path,
     )
 
     # delete paths
-    o.delete_paths(paths_to_delete=paths_to_delete)
+    objects.delete_paths(paths_to_delete=paths_to_delete)
 
 
 def copy_from_master_to_clone(
-    master_root_path, clone_root_path, master_sub_paths
+    origin_root_path, destination_root_path, master_sub_paths
 ):
-    '''
+    """
     Copy files present in master but missing in clone (from master to clone).
 
     Parameters
     ----------
-    master_root_path : pathlib object
+    origin_root_path : pathlib object
         Root path of master folder.
-    clone_root_path : pathlib object
+    destination_root_path : pathlib object
         Root path of clone folder.
     master_sub_paths : dict
         Dictionary containing sub paths for master.
@@ -76,44 +77,47 @@ def copy_from_master_to_clone(
     -------
     None.
 
-    '''
+    """
 
     # get clone_sub_paths again, since deletitions may have just been performed
-    clone_sub_paths = o.get_sub_paths(path=clone_root_path)
+    clone_sub_paths = objects.get_sub_paths(path=destination_root_path)
 
     # copy from master to clone
-    paths_to_copy = o.get_paths_to_copy(
+    paths_to_copy = objects.get_paths_to_copy(
         master_sub_paths=master_sub_paths, clone_sub_paths=clone_sub_paths
     )
 
-    o.copy_paths(
-        master_root_path=master_root_path, clone_root_path=clone_root_path,
-        paths_to_copy=paths_to_copy
+    objects.copy_paths(
+        origin_root_path=origin_root_path,
+        destination_root_path=destination_root_path,
+        paths_to_copy=paths_to_copy,
     )
 
 
-def test_if_sucessful(master_root_path, clone_root_path):
-    '''
+def test_if_sucessful(origin_root_path, destination_root_path):
+    """
     Checks if the process went successfully, that is, master and clone folders
     are equal after all the change.
 
     Parameters
     ----------
-    master_root_path : pathlib object
+    origin_root_path : pathlib object
         Root path of master folder.
-    clone_root_path : pathlib object
+    destination_root_path : pathlib object
         Root path of clone folder.
 
     Returns
     -------
     None.
 
-    '''
+    """
 
-    master_sub_paths = o.get_sub_paths(path=master_root_path)
-    clone_sub_paths = o.get_sub_paths(path=clone_root_path)
+    master_sub_paths = objects.get_sub_paths(path=origin_root_path)
+    clone_sub_paths = objects.get_sub_paths(path=destination_root_path)
 
     if master_sub_paths == clone_sub_paths:
-        print('Process successful! both folders are now equal.')
+        print("Process successful! both folders are now equal.")
+        return 0
     else:
-        print('Something went wrong. Master and clone folders are not equal.')
+        print("Something went wrong. Master and clone folders are not equal.")
+        return 1

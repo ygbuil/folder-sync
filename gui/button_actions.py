@@ -1,3 +1,4 @@
+import customtkinter as ctk
 import json
 import time
 import threading
@@ -7,11 +8,12 @@ from constants import *
 
 def start_backup(x, y):
     print("Start")
+    print(x, y)
     time.sleep(3)
     print("End")
 
 
-def btn_function(app, button, progress_bar):
+def btn_function(app, button):
     x = 100
     y = 100
 
@@ -22,7 +24,8 @@ def btn_function(app, button, progress_bar):
     button.configure(state="disabled")
 
     # show progressbar
-    progress_bar.pack(padx=X_PROGRESSBAR, pady=Y_PROGRESSBAR)
+    progress_bar = ctk.CTkProgressBar(app, mode="indeterminate", indeterminate_speed=3)
+    progress_bar.pack(pady=120, padx=120)
 
     # start updating progressbar
     update_progressbar(

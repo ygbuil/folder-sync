@@ -65,9 +65,6 @@ trigger_frame.add_button(
     command=lambda: button_actions.btn_function(
         app=app,
         button=trigger_frame.button,
-        progress_bar=ctk.CTkProgressBar(
-            app, mode="indeterminate", indeterminate_speed=3
-        ),
     ),
     width=200,
 )
