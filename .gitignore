@@ -51,5 +51,5 @@ docs/_build/
 
 # Others:
 .DS_Store
-.venv
+venv
 .env
