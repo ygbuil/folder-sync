@@ -1,76 +1,63 @@
 import customtkinter as ctk
 
 
+class Window:
+    def __init__(self, window, title):
+        self.window = window
+        self.title = title
+
+    def set_window_geometry(self, window_width, window_height):
+        x_position = (self.window.winfo_screenwidth() - window_width) // 2
+        y_position = (self.window.winfo_screenheight() - window_height) // 2
+
+        self.window.geometry(
+            f"{window_width}x{window_height}+{x_position}+{y_position}"
+        )
+
+
+class LeftMenu:
+    def __init__(self, window):
+        self.window = window
+
+    def add_frame(self, **kwargs):
+        frame = ctk.CTkFrame(master=self.window)
+        frame.pack(**kwargs)
+        self.__dict__["frame"] = frame
+
+    def add_label(self, text, font, side, padx, pady):
+        app_title = ctk.CTkLabel(master=self.frame, text=text, font=font)
+        app_title.pack(side=side, padx=padx, pady=pady)
+
+
+class ContinueCancel:
+    def __init__(self, window):
+        self.window = window
+
+    def add_frame(self, **kwargs):
+        frame = ctk.CTkFrame(master=self.window, fg_color="transparent")
+        frame.pack(**kwargs)
+        self.__dict__["frame"] = frame
+
+    def add_button(self, text, command, padx, **kwargs):
+        button = ctk.CTkButton(master=self.frame, text=text, command=command, **kwargs)
+        button.pack(side=ctk.LEFT, padx=padx)
+
+
 class DirectorySelector:
-    def __init__(
-        self,
-        window,
-        selector_type,
-        button=None,
-        directory_label=None,
-    ):
+    def __init__(self, window, selector_type):
         self.window = window
         self.selector_type = selector_type
-        self.button = button
-        self.directory_label = directory_label
-
-    def add_button(self, text, width, command, x, y):
-        button = ctk.CTkButton(
-            master=self.window, text=text, width=width, command=command
-        )
-        button.place(x=x, y=y)
-        self.button = button
-
-    def add_label(self, cache, x, y):
-        directory_label = ctk.CTkLabel(
-            master=self.window,
-            text="No origin folder selected."
-            if cache[self.selector_type] == ""
-            else cache[self.selector_type],
-        )
-        directory_label.place(x=x, y=y)
-        self.directory_label = directory_label
-
-        # frame = ctk.CTkFrame(self.window)
-        # frame.place(x=x, y=y)
-
-        # directory_label = ctk.CTkLabel(
-        #     master=frame,
-        #     text="No origin folder selected."
-        #     if cache[self.selector_type] == ""
-        #     else cache[self.selector_type]
-        # )
-        # self.directory_label = directory_label
-        # directory_label.pack(side=ctk.LEFT, padx=0, pady=0)
-
-
-class DirectorySelector:
-    def __init__(
-        self,
-        window,
-        selector_type,
-        frame=None,
-        button=None,
-        directory_label=None,
-    ):
-        self.window = window
-        self.selector_type = selector_type
-        self.frame = frame
-        self.button = button
-        self.directory_label = directory_label
 
     def add_frame(self, x, y):
-        frame = ctk.CTkFrame(self.window)
+        frame = ctk.CTkFrame(master=self.window)
         frame.pack()
         frame.place(x=x, y=y)
-        self.frame = frame
+        self.__dict__["frame"] = frame
 
-    def add_button(self, text, width, command):
-        button = ctk.CTkButton(
-            master=self.frame, text=text, width=width, command=command
-        )
-        button.pack(side=ctk.LEFT)
-        self.button = button
+    def add_button(self, text, command, padx, pady, **kwargs):
+        button = ctk.CTkButton(master=self.frame, text=text, command=command, **kwargs)
+        button.pack(side=ctk.LEFT, padx=padx, pady=pady)
+        self.__dict__["button"] = button
 
     def add_label(self, cache):
         directory_label = ctk.CTkLabel(
@@ -79,5 +66,12 @@ class DirectorySelector:
             if cache[self.selector_type] == ""
             else cache[self.selector_type],
         )
-        self.directory_label = directory_label
         directory_label.pack(side=ctk.LEFT, padx=10)
+        self.__dict__["directory_label"] = directory_label
+
+    def add_progressbar(self, width):
+        progress_bar = ctk.CTkProgressBar(
+            self.frame, mode="indeterminate", indeterminate_speed=3, width=width
+        )
+        progress_bar.pack(side=ctk.LEFT, padx=10)
+        self.__dict__["progress_bar"] = progress_bar
