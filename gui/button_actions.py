@@ -14,36 +14,39 @@ def start_backup(origin_directory, destination_directory):
     print("End")
 
 
-def btn_function(root, trigger_frame, origin_directory, destination_directory):
+def btn_function(
+    window, warning_window, trigger_button, origin_directory, destination_directory
+):
+    warning_window.destroy()
     thread = threading.Thread(
         target=start_backup, args=(origin_directory, destination_directory)
     )
     thread.start()
 
     # block button
-    trigger_frame.button.configure(state="disabled")
+    trigger_button.configure(state="disabled")
 
     # show progressbar
     progress_bar = ctk.CTkProgressBar(
-        trigger_frame.frame, mode="indeterminate", indeterminate_speed=3
+        window, mode="indeterminate", indeterminate_speed=3
     )
-    progress_bar.pack(side="left", padx=20)
+    progress_bar.place(x=X_PROGRESSBAR, y=Y_PROGRESSBAR)
 
     # start updating progressbar
     update_progressbar(
-        root=root, button=trigger_frame.button, progress_bar=progress_bar, thread=thread
+        window=window, button=trigger_button, progress_bar=progress_bar, thread=thread
     )  # send thread as parameter - so it doesn't need `global`
 
 
-def update_progressbar(root, button, progress_bar, thread):
+def update_progressbar(window, button, progress_bar, thread):
     if thread.is_alive():
         # update progressbar
         progress_bar.step()
         # check again after 25ms
-        root.after(25, update_progressbar, root, button, progress_bar, thread)
+        window.after(25, update_progressbar, window, button, progress_bar, thread)
     else:
         # hide progressbar
-        progress_bar.pack_forget()
+        progress_bar.destroy()
         # unblock button
         button.configure(state="normal")
 
@@ -53,15 +56,14 @@ def update_label_cache(cache):
         json.dump(cache, cache_file)
 
 
-def choose_directory(self, cache):
+def choose_directory(cache, directory_selector):
     selected_directory = filedialog.askdirectory()
 
     if selected_directory:
-        self.selected_directory_label.configure(text=selected_directory)
-
-        if self.frame_name == "origin":
+        directory_selector.directory_label.configure(text=selected_directory)
+        if directory_selector.selector_type == "origin":
             cache["origin"] = selected_directory
-        elif self.frame_name == "destination":
+        elif directory_selector.selector_type == "destination":
             cache["destination"] = selected_directory
 
         update_label_cache(cache)

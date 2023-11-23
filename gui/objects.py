@@ -1,32 +1,83 @@
 import customtkinter as ctk
 
 
-class Frame:
+class DirectorySelector:
     def __init__(
         self,
-        frame,
-        frame_name,
-        selected_directory_label=None,
+        window,
+        selector_type,
         button=None,
+        directory_label=None,
     ):
+        self.window = window
+        self.selector_type = selector_type
+        self.button = button
+        self.directory_label = directory_label
+
+    def add_button(self, text, width, command, x, y):
+        button = ctk.CTkButton(
+            master=self.window, text=text, width=width, command=command
+        )
+        button.place(x=x, y=y)
+        self.button = button
+
+    def add_label(self, cache, x, y):
+        directory_label = ctk.CTkLabel(
+            master=self.window,
+            text="No origin folder selected."
+            if cache[self.selector_type] == ""
+            else cache[self.selector_type],
+        )
+        directory_label.place(x=x, y=y)
+        self.directory_label = directory_label
+
+        # frame = ctk.CTkFrame(self.window)
+        # frame.place(x=x, y=y)
+
+        # directory_label = ctk.CTkLabel(
+        #     master=frame,
+        #     text="No origin folder selected."
+        #     if cache[self.selector_type] == ""
+        #     else cache[self.selector_type]
+        # )
+        # self.directory_label = directory_label
+        # directory_label.pack(side=ctk.LEFT, padx=0, pady=0)
+
+
+class DirectorySelector:
+    def __init__(
+        self,
+        window,
+        selector_type,
+        frame=None,
+        button=None,
+        directory_label=None,
+    ):
+        self.window = window
+        self.selector_type = selector_type
         self.frame = frame
-        self.frame_name = frame_name
-        self.selected_directory_label = selected_directory_label
         self.button = button
+        self.directory_label = directory_label
 
-    @classmethod
-    def create_frame(cls, root, frame_name, x_frame, y_frame):
-        frame = ctk.CTkFrame(root)
+    def add_frame(self, x, y):
+        frame = ctk.CTkFrame(self.window)
         frame.pack()
-        frame.place(x=x_frame, y=y_frame)
+        frame.place(x=x, y=y)
+        self.frame = frame
 
-        return cls(frame=frame, frame_name=frame_name)
-
-    def add_button(self, button_text, command, **kwargs):
-        button = ctk.CTkButton(self.frame, text=button_text, command=command, **kwargs)
-        button.pack(side="left")
+    def add_button(self, text, width, command):
+        button = ctk.CTkButton(
+            master=self.frame, text=text, width=width, command=command
+        )
+        button.pack(side=ctk.LEFT)
         self.button = button
 
-    def add_label(self, label_text):
-        self.selected_directory_label = ctk.CTkLabel(self.frame, text=label_text)
-        self.selected_directory_label.pack(side="left", padx=10)
+    def add_label(self, cache):
+        directory_label = ctk.CTkLabel(
+            master=self.frame,
+            text="No origin folder selected."
+            if cache[self.selector_type] == ""
+            else cache[self.selector_type],
+        )
+        self.directory_label = directory_label
+        directory_label.pack(side=ctk.LEFT, padx=10)
