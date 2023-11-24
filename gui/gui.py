@@ -1,6 +1,6 @@
 import customtkinter as ctk
 import button_actions
-from objects import DirectorySelector, LeftMenuBuilder, Window, DirectorySelectorBuilder
+from objects import LeftMenuBuilder, Window, DirectorySelectorBuilder
 from constants import *
 import utils
 
@@ -54,19 +54,21 @@ destination_selector = (
 )
 
 # trigger selector
-trigger_object = DirectorySelector(window=root.window, selector_type="destination")
-trigger_object.define_frame(x=X_TRIGGER_BUTTON, y=Y_TRIGGER_BUTTON)
-trigger_object.define_button(
-    text="Start Backup",
-    command=lambda: button_actions.open_warning_window(
-        root=root, cache=cache, trigger_object=trigger_object
-    ),
-    padx=0,
-    pady=0,
-    width=160,
-    height=40,
+trigger_object = (
+    DirectorySelectorBuilder(window=root.window, selector_type="destination")
+    .build_frame(x=X_TRIGGER_BUTTON, y=Y_TRIGGER_BUTTON)
+    .build_button(
+        text="Start Backup",
+        command=lambda: button_actions.open_warning_window(
+            root=root, cache=cache, trigger_object=trigger_object
+        ),
+        padx=0,
+        pady=0,
+        width=160,
+        height=40,
+    )
+    .build()
 )
-
 
 root.set_window_geometry(
     window_width=ROOT_WINDOW_WIDTH, window_height=ROOT_WINDOW_HEIGHT
