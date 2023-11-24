@@ -116,8 +116,6 @@ def test_if_sucessful(origin_root_path, destination_root_path):
     clone_sub_paths = objects.get_sub_paths(path=destination_root_path)
 
     if master_sub_paths == clone_sub_paths:
-        print("Process successful! both folders are now equal.")
-        return 0
+        return 0, "Process successful! both folders are now equal."
     else:
-        print("Something went wrong. Master and clone folders are not equal.")
-        return 1
+        return 1, "Something went wrong. Origin and destination folders are not equal."

@@ -46,11 +46,13 @@ def main(origin_root_path, destination_root_path):
     )
 
     # check if both folders are equal
-    exit_code = objects.test_if_sucessful(
+    exit_code, exit_message = objects.test_if_sucessful(
         origin_root_path=origin_root_path, destination_root_path=destination_root_path
     )
 
-    return exit_code
+    print(exit_message)
+
+    return exit_code, exit_message
 
 
 def dummy():

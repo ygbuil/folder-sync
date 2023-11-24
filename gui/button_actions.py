@@ -4,7 +4,7 @@ import time
 import threading
 from tkinter import filedialog
 from constants import *
-from objects import Window, ContinueCancel
+from objects import Window, CancelContinue, CancelContinueBuilder
 
 
 def start_backup(origin_directory, destination_directory):
@@ -24,11 +24,11 @@ def btn_function(
     )
     thread.start()
 
-    # block button
+    # disabled button while backing up
     trigger_object.button.configure(state="disabled")
 
     # show progressbar
-    trigger_object.add_progressbar(width=PROGRESSBAR_WIDTH)
+    trigger_object.define_progressbar(width=PROGRESSBAR_WIDTH)
 
     # start updating progressbar
     update_progressbar(
@@ -73,7 +73,7 @@ def choose_directory(cache, directory_selector):
 
 
 def open_warning_window(root, cache, trigger_object):
-    warning = Window(window=ctk.CTkToplevel(root.window), title="Warning")
+    warning = Window.create_window(window=ctk.CTkToplevel(root.window), title="Warning")
 
     label = ctk.CTkLabel(
         warning.window,
@@ -81,24 +81,29 @@ def open_warning_window(root, cache, trigger_object):
     )
     label.pack()
 
-    cancel_continue_outter = ContinueCancel(window=warning.window)
-    cancel_continue_outter.add_frame(side=ctk.BOTTOM, fill=ctk.X, pady=10)
-
-    cancel_continue_inner = ContinueCancel(window=cancel_continue_outter.frame)
-    cancel_continue_inner.add_frame()
-    cancel_continue_inner.add_button(
-        text="Cancel", command=lambda: warning.window.destroy(), padx=5, width=80
+    cancel_continue_outter = (
+        CancelContinueBuilder(window=warning.window)
+        .build_frame(side=ctk.BOTTOM, fill=ctk.X, pady=20)
+        .build()
     )
-    cancel_continue_inner.add_button(
-        text="Continue",
-        command=lambda: btn_function(
-            warning_window=warning.window,
-            trigger_object=trigger_object,
-            origin_directory=cache["origin"],
-            destination_directory=cache["destination"],
-        ),
-        padx=5,
-        width=80,
+    cancel_continue_inner = (
+        CancelContinueBuilder(window=cancel_continue_outter.frame)
+        .build_frame()
+        .build_button(
+            text="Cancel", command=lambda: warning.window.destroy(), padx=5, width=80
+        )
+        .build_button(
+            text="Continue",
+            command=lambda: btn_function(
+                warning_window=warning.window,
+                trigger_object=trigger_object,
+                origin_directory=cache["origin"],
+                destination_directory=cache["destination"],
+            ),
+            padx=5,
+            width=80,
+        )
+        .build()
     )
 
     warning.set_window_geometry(
