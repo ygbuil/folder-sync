@@ -1,6 +1,14 @@
+import sys
+
+sys.path.append("/Users/ygbuil/Documents/github/Folder-Cloning-System")
 import customtkinter as ctk
 import button_actions
-from objects import LeftMenuBuilder, Window, DirectorySelectorBuilder
+from objects import (
+    LeftMenuBuilder,
+    Window,
+    DirectorySelectorBuilder,
+    TriggerObjectBuilder,
+)
 from constants import *
 import utils
 
@@ -12,11 +20,16 @@ cache = utils.read_cache()
 left_menu = (
     LeftMenuBuilder(window=root.window)
     .build_frame(side=ctk.LEFT, fill=ctk.Y, padx=10, pady=10)
-    .build_label(
-        text=APP_NAME, font=("TkDefaultFont", 20), side=ctk.TOP, padx=20, pady=10
-    )
+    .build_label(text=APP_NAME, font=TITLE_FONT, side=ctk.TOP, padx=20, pady=10)
     .build()
 )
+
+from PIL import Image
+
+button_image = ctk.CTkImage(Image.open("gui/arrow.png"), size=(26, 26))
+image_button = ctk.CTkLabel(master=root.window, image=button_image, text="")
+image_button.place(x=X_ARROW, y=Y_ARROW)
+# image_button.pack()
 
 # origin selector
 origin_selector = (
@@ -30,6 +43,8 @@ origin_selector = (
         padx=0,
         pady=0,
         width=160,
+        fg_color=DIRECTORY_SELECTOR_BUTTON_COLOR,
+        hover_color=DIRECTORY_SELECTOR_BUTTON_HOVER_COLOR,
     )
     .build_label(cache=cache)
     .build()
@@ -48,14 +63,16 @@ destination_selector = (
         padx=0,
         pady=0,
         width=160,
+        fg_color=DIRECTORY_SELECTOR_BUTTON_COLOR,
+        hover_color=DIRECTORY_SELECTOR_BUTTON_HOVER_COLOR,
     )
     .build_label(cache=cache)
     .build()
 )
 
-# trigger selector
+# trigger object
 trigger_object = (
-    DirectorySelectorBuilder(window=root.window, selector_type="destination")
+    TriggerObjectBuilder(window=root.window, selector_type="destination")
     .build_frame(x=X_TRIGGER_BUTTON, y=Y_TRIGGER_BUTTON)
     .build_button(
         text="Start Backup",
@@ -66,6 +83,8 @@ trigger_object = (
         pady=0,
         width=160,
         height=40,
+        fg_color=TRIGGER_BUTTON_COLOR,
+        hover_color=TRIGGER_BUTTON_HOVER_COLOR,
     )
     .build()
 )
@@ -73,4 +92,6 @@ trigger_object = (
 root.set_window_geometry(
     window_width=ROOT_WINDOW_WIDTH, window_height=ROOT_WINDOW_HEIGHT
 )
-root.window.mainloop()
+
+if __name__ == "__main__":
+    root.window.mainloop()

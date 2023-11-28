@@ -4,18 +4,86 @@ import time
 import threading
 from tkinter import filedialog
 from constants import *
-from objects import Window, CancelContinue, CancelContinueBuilder
+from objects import Window, CancelContinueBuilder
+from backend.main import dummy, main
 
 
-def start_backup(origin_directory, destination_directory):
-    print("Start")
-    print(origin_directory, destination_directory)
-    # dummy()
-    time.sleep(3)
-    print("End")
+def open_warning_window(root, cache, trigger_object):
+    trigger_object.button.configure(state="disabled")
+
+    warning = Window.create_window(window=ctk.CTkToplevel(root.window), title="Warning")
+    warning.window.protocol(
+        "WM_DELETE_WINDOW", lambda: on_closing(warning, trigger_object)
+    )
+
+    label = ctk.CTkLabel(
+        warning.window, text=f"You are about overwrite everything inside:", font=FONT
+    )
+    label.pack()
+    label = ctk.CTkLabel(
+        warning.window, text=f"'{cache['destination']}'", font=(*FONT, "bold")
+    )
+    label.pack()
+    label = ctk.CTkLabel(warning.window, text=f"with the content inside:", font=FONT)
+    label.pack()
+    label = ctk.CTkLabel(
+        warning.window, text=f"'{cache['origin']}'", font=(*FONT, "bold")
+    )
+    label.pack()
+    label = ctk.CTkLabel(warning.window, text=f"Are you sure?", font=FONT)
+    label.pack()
+
+    cancel_continue_outter = (
+        CancelContinueBuilder(window=warning.window)
+        .build_frame(side=ctk.BOTTOM, fill=ctk.X, pady=20)
+        .build()
+    )
+    cancel_continue_inner = (
+        CancelContinueBuilder(window=cancel_continue_outter.frame)
+        .build_frame()
+        .build_button(
+            text="Cancel",
+            command=lambda: cancel_action(
+                warning=warning, trigger_object=trigger_object
+            ),
+            padx=5,
+            width=80,
+            fg_color=CANCEL_BUTTON_COLOR,
+            hover_color=CANCEL_BUTTON_HOVER_COLOR,
+        )
+        .build_button(
+            text="Continue",
+            command=lambda: continue_action(
+                warning_window=warning.window,
+                trigger_object=trigger_object,
+                origin_directory=cache["origin"],
+                destination_directory=cache["destination"],
+            ),
+            padx=5,
+            width=80,
+            fg_color=CONTINUE_BUTTON_COLOR,
+            hover_color=CONTINUE_BUTTON_HOVER_COLOR,
+        )
+        .build()
+    )
+
+    warning.set_window_geometry(
+        window_width=WARNING_WINDOW_WIDTH,
+        window_height=WARNING_WINDOW_HEIGHT,
+    )
 
 
-def btn_function(
+def on_closing(warning, trigger_object):
+    trigger_object.button.configure(state="normal")
+    warning.window.destroy()
+
+
+def cancel_action(warning, trigger_object):
+    trigger_object.button.configure(state="normal")
+    warning.window.destroy()
+
+
+def continue_action(
     warning_window, trigger_object, origin_directory, destination_directory
 ):
     warning_window.destroy()
@@ -24,19 +92,21 @@ def btn_function(
     )
     thread.start()
 
-    # disabled button while backing up
-    trigger_object.button.configure(state="disabled")
-
-    # show progressbar
+    # spawn progressbar
     trigger_object.define_progressbar(width=PROGRESSBAR_WIDTH)
 
-    # start updating progressbar
     update_progressbar(
         warning_window=warning_window,
         button=trigger_object.button,
         progress_bar=trigger_object.progress_bar,
         thread=thread,
-    )  # send thread as parameter - so it doesn't need `global`
+    )
+
+
+def start_backup(origin_directory, destination_directory):
+    time.sleep(1)
+    # main(origin_root_path=origin_directory, destination_root_path=destination_directory)
+    print("hey")
 
 
 def update_progressbar(warning_window, button, progress_bar, thread):
@@ -48,15 +118,8 @@ def update_progressbar(warning_window, button, progress_bar, thread):
             25, update_progressbar, warning_window, button, progress_bar, thread
         )
     else:
-        # hide progressbar
         progress_bar.destroy()
-        # unblock button
         button.configure(state="normal")
-
-
-def update_label_cache(cache):
-    with open(LABEL_CACHE, "w") as cache_file:
-        json.dump(cache, cache_file)
 
 
 def choose_directory(cache, directory_selector):
@@ -72,41 +135,6 @@ def choose_directory(cache, directory_selector):
         update_label_cache(cache)
 
 
-def open_warning_window(root, cache, trigger_object):
-    warning = Window.create_window(window=ctk.CTkToplevel(root.window), title="Warning")
-
-    label = ctk.CTkLabel(
-        warning.window,
-        text=f"You are about to overwrite the content inside\n'{cache['destination']}'\nwith the one inside\n'{cache['origin']}'.\nAre you sure?",
-    )
-    label.pack()
-
-    cancel_continue_outter = (
-        CancelContinueBuilder(window=warning.window)
-        .build_frame(side=ctk.BOTTOM, fill=ctk.X, pady=20)
-        .build()
-    )
-    cancel_continue_inner = (
-        CancelContinueBuilder(window=cancel_continue_outter.frame)
-        .build_frame()
-        .build_button(
-            text="Cancel", command=lambda: warning.window.destroy(), padx=5, width=80
-        )
-        .build_button(
-            text="Continue",
-            command=lambda: btn_function(
-                warning_window=warning.window,
-                trigger_object=trigger_object,
-                origin_directory=cache["origin"],
-                destination_directory=cache["destination"],
-            ),
-            padx=5,
-            width=80,
-        )
-        .build()
-    )
-
-    warning.set_window_geometry(
-        window_width=WARNING_WINDOW_WIDTH,
-        window_height=WARNING_WINDOW_HEIGHT,
-    )
+def update_label_cache(cache):
+    with open(LABEL_CACHE, "w") as cache_file:
+        json.dump(cache, cache_file)
