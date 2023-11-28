@@ -1,7 +1,9 @@
 import sys
-
-sys.path.append("/Users/ygbuil/Documents/github/Easy-Backup")
+import os
 import customtkinter as ctk
+
+sys.path.append(os.getcwd())
+
 import button_actions
 from objects import (
     LeftMenuBuilder,
