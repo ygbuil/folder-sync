@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append("/Users/ygbuil/Documents/github/Folder-Cloning-System")
+sys.path.append("/Users/ygbuil/Documents/github/Easy-Backup")
 import customtkinter as ctk
 import button_actions
 from objects import (
