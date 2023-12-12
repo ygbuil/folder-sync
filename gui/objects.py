@@ -70,9 +70,7 @@ class DirectorySelector:
     def define_label(self, cache):
         directory_label = ctk.CTkLabel(
             master=self.window,
-            text="No origin folder selected."
-            if cache[self.selector_type] == ""
-            else cache[self.selector_type],
+            text=cache[self.selector_type],
         )
         directory_label.place(x=self.x + 170, y=self.y - 1)
         self.__dict__["directory_label"] = directory_label
