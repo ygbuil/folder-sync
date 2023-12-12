@@ -8,8 +8,9 @@ import button_actions
 from objects import (
     LeftMenuBuilder,
     Window,
-    DirectorySelectorBuilder,
     TriggerObjectBuilder,
+    DirectorySelectorBuilder,
+    add_image,
 )
 from constants import *
 import utils
@@ -26,24 +27,25 @@ left_menu = (
     .build()
 )
 
-from PIL import Image
+# down arrow
+add_image(
+    window=root.window, image_path=ARROW_PATH, size=ARROW_SIZE, x=X_ARROW, y=Y_ARROW
+)
 
-button_image = ctk.CTkImage(Image.open("gui/arrow.png"), size=(26, 26))
-image_button = ctk.CTkLabel(master=root.window, image=button_image, text="")
-image_button.place(x=X_ARROW, y=Y_ARROW)
-# image_button.pack()
 
 # origin selector
 origin_selector = (
-    DirectorySelectorBuilder(window=root.window, selector_type="origin")
-    .build_frame(x=X_ORIGIN_SELECTOR, y=Y_ORIGIN_SELECTOR)
+    DirectorySelectorBuilder(
+        window=root.window,
+        selector_type="origin",
+        x=X_ORIGIN_SELECTOR,
+        y=Y_ORIGIN_SELECTOR,
+    )
     .build_button(
         text="Choose Origin Folder",
         command=lambda: button_actions.choose_directory(
             cache=cache, directory_selector=origin_selector
         ),
-        padx=0,
-        pady=0,
         width=160,
         fg_color=DIRECTORY_SELECTOR_BUTTON_COLOR,
         hover_color=DIRECTORY_SELECTOR_BUTTON_HOVER_COLOR,
@@ -55,15 +57,17 @@ origin_selector = (
 
 # destination selector
 destination_selector = (
-    DirectorySelectorBuilder(window=root.window, selector_type="destination")
-    .build_frame(x=X_DESTINATION_SELECTOR, y=Y_DESTINATION_SELECTOR)
+    DirectorySelectorBuilder(
+        window=root.window,
+        selector_type="destination",
+        x=X_DESTINATION_SELECTOR,
+        y=Y_DESTINATION_SELECTOR,
+    )
     .build_button(
-        text="Choose Backup Folder",
+        text="Choose Origin Folder",
         command=lambda: button_actions.choose_directory(
             cache=cache, directory_selector=destination_selector
         ),
-        padx=0,
-        pady=0,
         width=160,
         fg_color=DIRECTORY_SELECTOR_BUTTON_COLOR,
         hover_color=DIRECTORY_SELECTOR_BUTTON_HOVER_COLOR,
@@ -71,6 +75,7 @@ destination_selector = (
     .build_label(cache=cache)
     .build()
 )
+
 
 # trigger object
 trigger_object = (

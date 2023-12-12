@@ -16,21 +16,24 @@ def open_warning_window(root, cache, trigger_object):
         "WM_DELETE_WINDOW", lambda: on_closing(warning, trigger_object)
     )
 
+    # label = ctk.CTkLabel(
+    #     warning.window, text=f"Are you sure you want to overwrite everything inside"
+    # )
+    # label.pack()
+    # label = ctk.CTkLabel(
+    #     warning.window, text=f'"{cache["destination"]}"'
+    # )
+    # label.pack()
+    # label = ctk.CTkLabel(warning.window, text=f"with the content from")
+    # label.pack()
+    # label = ctk.CTkLabel(
+    #     warning.window, text=f'"{cache["origin"]}"?'
+    # )
+    # label.pack()
     label = ctk.CTkLabel(
-        warning.window, text=f"You are about overwrite everything inside:", font=FONT
+        warning.window,
+        text=f'Are you sure you want to overwrite everything inside\n\n"{cache["destination"]}"\n\nwith the content from\n\n"{cache["origin"]}"?',
     )
-    label.pack()
-    label = ctk.CTkLabel(
-        warning.window, text=f"'{cache['destination']}'", font=(*FONT, "bold")
-    )
-    label.pack()
-    label = ctk.CTkLabel(warning.window, text=f"with the content inside:", font=FONT)
-    label.pack()
-    label = ctk.CTkLabel(
-        warning.window, text=f"'{cache['origin']}'", font=(*FONT, "bold")
-    )
-    label.pack()
-    label = ctk.CTkLabel(warning.window, text=f"Are you sure?", font=FONT)
     label.pack()
 
     cancel_continue_outter = (
@@ -105,7 +108,7 @@ def continue_action(
 
 def start_backup(origin_directory, destination_directory):
     time.sleep(1)
-    # main(origin_root_path=origin_directory, destination_root_path=destination_directory)
+    main(origin_root_path=origin_directory, destination_root_path=destination_directory)
     print("hey")
 
 
