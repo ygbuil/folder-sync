@@ -53,4 +53,3 @@ docs/_build/
 .DS_Store
 venv
 .env
-label_cache.json
