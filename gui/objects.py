@@ -95,43 +95,41 @@ class DirectorySelectorBuilder:
 
 
 class TriggerObject:
-    def __init__(self, window, selector_type):
+    def __init__(self, window, x, y):
         self.window = window
-        self.selector_type = selector_type
+        self.x = x
+        self.y = y
+        self.exit_message = None
+        self.exit_message_label = None
 
-    def define_frame(self, x, y):
-        frame = ctk.CTkFrame(master=self.window, fg_color="transparent")
-        frame.pack()
-        frame.place(x=x, y=y)
-        self.__dict__["frame"] = frame
-
-    def define_button(self, text, command, padx, pady, **kwargs):
-        button = ctk.CTkButton(master=self.frame, text=text, command=command, **kwargs)
-        button.pack(side=ctk.LEFT, padx=padx, pady=pady)
+    def define_button(self, text, command, **kwargs):
+        button = ctk.CTkButton(master=self.window, text=text, command=command, **kwargs)
+        button.pack()
+        button.place(x=self.x, y=self.y)
         self.__dict__["button"] = button
 
     def define_progressbar(self, width):
         progress_bar = ctk.CTkProgressBar(
-            self.frame, mode="indeterminate", indeterminate_speed=3, width=width
+            self.window, mode="indeterminate", indeterminate_speed=3, width=width
         )
-        progress_bar.pack(side=ctk.LEFT, padx=10)
+        progress_bar.place(x=self.x + 170, y=self.y + 17)
         self.__dict__["progress_bar"] = progress_bar
+
+    def define_label(self):
+        exit_message_label = ctk.CTkLabel(
+            master=self.window,
+            text=self.exit_message,
+        )
+        exit_message_label.place(x=self.x + 170, y=self.y + 5)
+        self.exit_message_label = exit_message_label
 
 
 class TriggerObjectBuilder:
-    def __init__(self, window, selector_type):
-        self.root_window_widget = TriggerObject(
-            window=window, selector_type=selector_type
-        )
+    def __init__(self, window, x, y):
+        self.root_window_widget = TriggerObject(window=window, x=x, y=y)
 
-    def build_frame(self, x, y):
-        self.root_window_widget.define_frame(x=x, y=y)
-        return self
-
-    def build_button(self, text, command, padx, pady, **kwargs):
-        self.root_window_widget.define_button(
-            text=text, command=command, padx=padx, pady=pady, **kwargs
-        )
+    def build_button(self, text, command, **kwargs):
+        self.root_window_widget.define_button(text=text, command=command, **kwargs)
         return self
 
     def build(self):

@@ -50,10 +50,4 @@ def main(origin_root_path, destination_root_path):
         origin_root_path=origin_root_path, destination_root_path=destination_root_path
     )
 
-    print(exit_message)
-
     return exit_code, exit_message
-
-
-def dummy():
-    print("holaaa")

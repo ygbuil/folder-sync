@@ -1,1 +1,1 @@
-from .main import main, dummy
+from .main import main

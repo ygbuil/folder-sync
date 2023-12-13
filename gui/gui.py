@@ -32,7 +32,6 @@ add_image(
     window=root.window, image_path=ARROW_PATH, size=ARROW_SIZE, x=X_ARROW, y=Y_ARROW
 )
 
-
 # origin selector
 origin_selector = (
     DirectorySelectorBuilder(
@@ -53,7 +52,6 @@ origin_selector = (
     .build_label(cache=cache)
     .build()
 )
-
 
 # destination selector
 destination_selector = (
@@ -76,18 +74,14 @@ destination_selector = (
     .build()
 )
 
-
 # trigger object
 trigger_object = (
-    TriggerObjectBuilder(window=root.window, selector_type="destination")
-    .build_frame(x=X_TRIGGER_BUTTON, y=Y_TRIGGER_BUTTON)
+    TriggerObjectBuilder(window=root.window, x=X_TRIGGER_BUTTON, y=Y_TRIGGER_BUTTON)
     .build_button(
         text="Start Backup",
         command=lambda: button_actions.open_warning_window(
             root=root, cache=cache, trigger_object=trigger_object
         ),
-        padx=0,
-        pady=0,
         width=160,
         height=40,
         fg_color=TRIGGER_BUTTON_COLOR,
