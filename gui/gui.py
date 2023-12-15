@@ -1,3 +1,4 @@
+# ruff: noqa: E402
 import sys
 import os
 import customtkinter as ctk
@@ -12,7 +13,26 @@ from objects import (
     DirectorySelectorBuilder,
     add_image,
 )
-from constants import *
+from constants import (
+    APP_NAME,
+    TITLE_FONT,
+    ARROW_PATH,
+    ARROW_SIZE,
+    X_ARROW,
+    Y_ARROW,
+    X_ORIGIN_SELECTOR,
+    Y_ORIGIN_SELECTOR,
+    DIRECTORY_SELECTOR_BUTTON_COLOR,
+    DIRECTORY_SELECTOR_BUTTON_HOVER_COLOR,
+    X_DESTINATION_SELECTOR,
+    Y_DESTINATION_SELECTOR,
+    TRIGGER_BUTTON_COLOR,
+    TRIGGER_BUTTON_HOVER_COLOR,
+    X_TRIGGER_BUTTON,
+    Y_TRIGGER_BUTTON,
+    ROOT_WINDOW_HEIGHT,
+    ROOT_WINDOW_WIDTH,
+)
 import utils
 
 

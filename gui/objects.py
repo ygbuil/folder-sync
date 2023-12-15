@@ -1,6 +1,5 @@
 import customtkinter as ctk
 from PIL import Image
-from constants import *
 
 
 class Window:

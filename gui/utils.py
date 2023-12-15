@@ -1,5 +1,5 @@
 import json
-from constants import *
+from constants import LABEL_CACHE
 
 
 def read_cache():

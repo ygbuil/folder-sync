@@ -3,9 +3,18 @@ import json
 import time
 import threading
 from tkinter import filedialog
-from constants import *
+from constants import (
+    CANCEL_BUTTON_COLOR,
+    CANCEL_BUTTON_HOVER_COLOR,
+    CONTINUE_BUTTON_COLOR,
+    CONTINUE_BUTTON_HOVER_COLOR,
+    WARNING_WINDOW_HEIGHT,
+    WARNING_WINDOW_WIDTH,
+    PROGRESSBAR_WIDTH,
+    LABEL_CACHE,
+)
 from objects import Window, CancelContinueBuilder
-from backend.main import main
+import backend
 
 
 def open_warning_window(root, cache, trigger_object):
@@ -40,7 +49,7 @@ def open_warning_window(root, cache, trigger_object):
             .build_frame(side=ctk.BOTTOM, fill=ctk.X, pady=20)
             .build()
         )
-        cancel_continue_inner = (
+        (
             CancelContinueBuilder(window=cancel_continue_outter.frame)
             .build_frame()
             .build_button(
@@ -113,7 +122,7 @@ def continue_action(
 def start_backup(origin_directory, destination_directory, trigger_object):
     time.sleep(1)
     try:
-        _, exit_message = main(
+        _, exit_message = backend.main(
             origin_root_path=origin_directory,
             destination_root_path=destination_directory,
         )
