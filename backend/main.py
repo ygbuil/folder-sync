@@ -1,7 +1,7 @@
 # libraries
 from pathlib import Path
 
-# local libraries test
+# local libraries
 from . import objects
 
 
