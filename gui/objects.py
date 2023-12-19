@@ -98,6 +98,7 @@ class TriggerObject:
         self.window = window
         self.x = x
         self.y = y
+        self.progressbar_steps = 0
         self.exit_message = None
         self.exit_message_label = None
 
@@ -109,10 +110,16 @@ class TriggerObject:
 
     def define_progressbar(self, width):
         progress_bar = ctk.CTkProgressBar(
-            self.window, mode="indeterminate", indeterminate_speed=3, width=width
+            self.window, determinate_speed=0.5, width=width
         )
+        progress_bar.set(0)
         progress_bar.place(x=self.x + 170, y=self.y + 17)
         self.__dict__["progress_bar"] = progress_bar
+
+    def step_progress_bar(self):
+        self.progress_bar.step()
+        self.progressbar_steps += 1
+        print(self.progressbar_steps)
 
     def define_label(self):
         exit_message_label = ctk.CTkLabel(

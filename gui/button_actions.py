@@ -1,6 +1,5 @@
 import customtkinter as ctk
 import json
-import time
 import threading
 from tkinter import filedialog
 from constants import (
@@ -98,58 +97,36 @@ def continue_action(
     warning_window, trigger_object, origin_directory, destination_directory
 ):
     warning_window.destroy()
+
     thread = threading.Thread(
         target=start_backup,
         args=(origin_directory, destination_directory, trigger_object),
     )
     thread.start()
 
+    # destroy exit message from previous backup
     if trigger_object.exit_message_label:
         trigger_object.exit_message_label.destroy()
 
-    # spawn progressbar
-    trigger_object.define_progressbar(width=PROGRESSBAR_WIDTH)
-
-    update_progressbar(
-        warning_window=warning_window,
-        button=trigger_object.button,
-        progress_bar=trigger_object.progress_bar,
-        thread=thread,
-        trigger_object=trigger_object,
-    )
-
 
 def start_backup(origin_directory, destination_directory, trigger_object):
-    time.sleep(1)
+    trigger_object.define_progressbar(width=PROGRESSBAR_WIDTH)
+
     try:
         _, exit_message = backend.main(
             origin_root_path=origin_directory,
             destination_root_path=destination_directory,
+            trigger_object=trigger_object,
         )
-    except Exception:
-        exit_message = "Backup could not be completed."
+
+    except Exception as e:
+        # exit_message = "Backup could not be completed."
+        exit_message = e
 
     trigger_object.exit_message = exit_message
-
-
-def update_progressbar(warning_window, button, progress_bar, thread, trigger_object):
-    if thread.is_alive():
-        # update progressbar
-        progress_bar.step()
-        # check again after 25ms
-        warning_window.after(
-            25,
-            update_progressbar,
-            warning_window,
-            button,
-            progress_bar,
-            thread,
-            trigger_object,
-        )
-    else:
-        progress_bar.destroy()
-        trigger_object.define_label()
-        button.configure(state="normal")
+    trigger_object.progress_bar.destroy()
+    trigger_object.define_label()
+    trigger_object.button.configure(state="normal")
 
 
 def choose_directory(cache, directory_selector):
