@@ -20,16 +20,15 @@ def get_sub_paths(path):
     """
     # the "and not p.name.startswith('.')" condition is to avoid detecting
     # system files on macOS and Unix-based systems
-    path_dirs = [
-        p.relative_to(path)
-        for p in path.glob("**/*")
-        if p.is_dir() and not p.name.startswith(".")
-    ]
-    path_files = [
-        p.relative_to(path)
-        for p in path.glob("**/*")
-        if p.is_file() and not p.name.startswith(".")
-    ]
+    path_dirs = []
+    path_files = []
+
+    for p in path.glob("**/*"):
+        if not p.name.startswith("."):
+            if p.is_dir():
+                path_dirs.append(p.relative_to(path))
+            elif p.is_file():
+                path_files.append((p.relative_to(path), p.stat().st_mtime))
 
     path_dirs.sort()
     path_files.sort()
@@ -64,7 +63,9 @@ def get_paths_paths_to_delete(origin_sub_paths, destination_sub_paths):
         x for x in destination_sub_paths["dirs"] if x not in origin_sub_paths["dirs"]
     ]
     files_to_delete = [
-        x for x in destination_sub_paths["files"] if x not in origin_sub_paths["files"]
+        x[0]
+        for x in destination_sub_paths["files"]
+        if x not in origin_sub_paths["files"]
     ]
 
     # sort in order to avoid deleting a root folder before a sub folder
@@ -122,7 +123,9 @@ def get_paths_to_copy(origin_sub_paths, destination_sub_paths):
         x for x in origin_sub_paths["dirs"] if x not in destination_sub_paths["dirs"]
     ]
     files_to_copy = [
-        x for x in origin_sub_paths["files"] if x not in destination_sub_paths["files"]
+        x[0]
+        for x in origin_sub_paths["files"]
+        if x not in destination_sub_paths["files"]
     ]
 
     # sort in order to avoid creating a sub folder before a root folder

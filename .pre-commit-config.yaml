@@ -1,15 +1,24 @@
 repos:
-
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.1.8
     hooks:
       - id: ruff
+        name: Ruff linter
+        stages: [commit]
         args: [ --fix ]
       - id: ruff-format
+        name: Ruff formater
+        stages: [commit]
 
   - repo: local
     hooks:
     - id: empty-label-cache
       name: Empty Label Cache
+      stages: [commit]
       entry: python empty_label_cache.py
+      language: system
+    - id: tests
+      name: Tests
+      stages: [push]
+      entry: pytest
       language: system
