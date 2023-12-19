@@ -18,13 +18,11 @@ def get_sub_paths(path):
         Dictionary containing sub paths for both directories and files in path.
 
     """
-    # the "and not p.name.startswith('.')" condition is to avoid detecting
-    # system files on macOS and Unix-based systems
     path_dirs = []
     path_files = []
 
     for p in path.glob("**/*"):
-        if not p.name.startswith("."):
+        if p.name not in [".DS_Store"]:
             if p.is_dir():
                 path_dirs.append(p.relative_to(path))
             elif p.is_file():
@@ -49,8 +47,6 @@ def get_paths_paths_to_delete(origin_sub_paths, destination_sub_paths):
         Sub paths of master.
     destination_sub_paths : list
         Sub paths of clone.
-    destination_root_path : pathlib object
-        Root path of clone folder.
 
     Returns
     -------
@@ -84,6 +80,8 @@ def delete_paths(paths_to_delete, destination_root_path):
     ----------
     paths_to_delete : dict
         Dictionary containing the directories and files to delete.
+    destination_root_path : pathlib object
+        Root path of clone folder.
 
     Returns
     -------
