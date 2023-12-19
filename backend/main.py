@@ -22,27 +22,33 @@ def main(origin_root_path, destination_root_path):
     None.
 
     """
-
-    origin_root_path = Path(origin_root_path)
-    destination_root_path = Path(destination_root_path)
-
-    # get all sub paths
-    master_sub_paths, clone_sub_paths = objects.get_sub_paths(
-        origin_root_path=origin_root_path, destination_root_path=destination_root_path
+    origin_root_path, destination_root_path = (
+        Path(origin_root_path),
+        Path(destination_root_path),
     )
 
+    # get all sub paths
+    origin_sub_paths = objects.get_sub_paths(path=origin_root_path)
+    destination_sub_paths = objects.get_sub_paths(path=destination_root_path)
+
     # delete clone files not present in master
-    objects.delete_clone_files(
-        master_sub_paths=master_sub_paths,
-        clone_sub_paths=clone_sub_paths,
-        destination_root_path=destination_root_path,
+    paths_to_delete = objects.get_paths_paths_to_delete(
+        origin_sub_paths=origin_sub_paths,
+        destination_sub_paths=destination_sub_paths,
+    )
+    objects.delete_paths(
+        paths_to_delete=paths_to_delete, destination_root_path=destination_root_path
     )
 
     # copy files present in master but not in clone
-    objects.copy_from_master_to_clone(
+    destination_sub_paths = objects.get_sub_paths(path=destination_root_path)
+    paths_to_copy = objects.get_paths_to_copy(
+        origin_sub_paths=origin_sub_paths, destination_sub_paths=destination_sub_paths
+    )
+    objects.copy_paths(
         origin_root_path=origin_root_path,
         destination_root_path=destination_root_path,
-        master_sub_paths=master_sub_paths,
+        paths_to_copy=paths_to_copy,
     )
 
     # check if both folders are equal

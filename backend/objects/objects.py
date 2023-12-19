@@ -18,7 +18,6 @@ def get_sub_paths(path):
         Dictionary containing sub paths for both directories and files in path.
 
     """
-
     # the "and not p.name.startswith('.')" condition is to avoid detecting
     # system files on macOS and Unix-based systems
     path_dirs = [
@@ -40,16 +39,16 @@ def get_sub_paths(path):
     return sub_paths
 
 
-def get_paths_paths_to_delete(master_sub_paths, clone_sub_paths, destination_root_path):
+def get_paths_paths_to_delete(origin_sub_paths, destination_sub_paths):
     """
     Gets directories and files present in clone but missing in master, since
     they will need to be deleted from clone.
 
     Parameters
     ----------
-    master_sub_paths : list
+    origin_sub_paths : list
         Sub paths of master.
-    clone_sub_paths : list
+    destination_sub_paths : list
         Sub paths of clone.
     destination_root_path : pathlib object
         Root path of clone folder.
@@ -60,17 +59,12 @@ def get_paths_paths_to_delete(master_sub_paths, clone_sub_paths, destination_roo
         Dictionary containing the directories and files to delete.
 
     """
-
-    # clone_sub_paths paths not present in master_sub_paths
+    # destination_sub_paths paths not present in origin_sub_paths
     dirs_to_delete = [
-        destination_root_path / x
-        for x in clone_sub_paths["dirs"]
-        if x not in master_sub_paths["dirs"]
+        x for x in destination_sub_paths["dirs"] if x not in origin_sub_paths["dirs"]
     ]
     files_to_delete = [
-        destination_root_path / x
-        for x in clone_sub_paths["files"]
-        if x not in master_sub_paths["files"]
+        x for x in destination_sub_paths["files"] if x not in origin_sub_paths["files"]
     ]
 
     # sort in order to avoid deleting a root folder before a sub folder
@@ -81,7 +75,7 @@ def get_paths_paths_to_delete(master_sub_paths, clone_sub_paths, destination_roo
     return paths_to_delete
 
 
-def delete_paths(paths_to_delete):
+def delete_paths(paths_to_delete, destination_root_path):
     """
     Executes commands to delete the paths_to_delete.
 
@@ -95,28 +89,27 @@ def delete_paths(paths_to_delete):
     None.
 
     """
-
     # delete files
     for f in paths_to_delete["files"]:
-        os.remove(f)
+        os.remove(destination_root_path / f)
         print(f"Deleted file: {f}")
 
     # delete directories
     for d in paths_to_delete["dirs"]:
-        shutil.rmtree(d)
+        shutil.rmtree(destination_root_path / d)
         print(f"Deleted directory: {d}")
 
 
-def get_paths_to_copy(master_sub_paths, clone_sub_paths):
+def get_paths_to_copy(origin_sub_paths, destination_sub_paths):
     """
     Gets directories and files present in master but missing in clone, since
     they will need to be copied from master to clone.
 
     Parameters
     ----------
-    master_sub_paths : list
+    origin_sub_paths : list
         Sub paths of master.
-    clone_sub_paths : list
+    destination_sub_paths : list
         Sub paths of clone.
 
     Returns
@@ -125,12 +118,11 @@ def get_paths_to_copy(master_sub_paths, clone_sub_paths):
         Dictionary containing the directories and files to delete.
 
     """
-
     dirs_to_copy = [
-        x for x in master_sub_paths["dirs"] if x not in clone_sub_paths["dirs"]
+        x for x in origin_sub_paths["dirs"] if x not in destination_sub_paths["dirs"]
     ]
     files_to_copy = [
-        x for x in master_sub_paths["files"] if x not in clone_sub_paths["files"]
+        x for x in origin_sub_paths["files"] if x not in destination_sub_paths["files"]
     ]
 
     # sort in order to avoid creating a sub folder before a root folder
@@ -159,11 +151,36 @@ def copy_paths(origin_root_path, destination_root_path, paths_to_copy):
     None.
 
     """
-
     for d in paths_to_copy["dirs"]:
         os.makedirs(destination_root_path / d)
         print(f"Created directory: {d}")
 
     for f in paths_to_copy["files"]:
-        shutil.copy(origin_root_path / f, destination_root_path / f)
+        shutil.copy2(origin_root_path / f, destination_root_path / f)
         print(f"Copied file: {f}")
+
+
+def test_if_sucessful(origin_root_path, destination_root_path):
+    """
+    Checks if the process went successfully, that is, master and clone folders
+    are equal after all the change.
+
+    Parameters
+    ----------
+    origin_root_path : pathlib object
+        Root path of master folder.
+    destination_root_path : pathlib object
+        Root path of clone folder.
+
+    Returns
+    -------
+    None.
+
+    """
+    origin_sub_paths = get_sub_paths(path=origin_root_path)
+    destination_sub_paths = get_sub_paths(path=destination_root_path)
+
+    if origin_sub_paths == destination_sub_paths:
+        return 0, "Process successful, both folders are now equal!"
+    else:
+        return 1, "Something went wrong. Origin and destination folders are not equal."

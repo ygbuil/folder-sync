@@ -1,13 +1,17 @@
-from .main_modules import (
+from .objects import (
     get_sub_paths,
-    delete_clone_files,
-    copy_from_master_to_clone,
     test_if_sucessful,
+    get_paths_paths_to_delete,
+    delete_paths,
+    get_paths_to_copy,
+    copy_paths,
 )
 
 __all__ = [
     "get_sub_paths",
-    "delete_clone_files",
-    "copy_from_master_to_clone",
     "test_if_sucessful",
+    "get_paths_paths_to_delete",
+    "delete_paths",
+    "get_paths_to_copy",
+    "copy_paths",
 ]
