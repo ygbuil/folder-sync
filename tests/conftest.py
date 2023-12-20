@@ -44,3 +44,15 @@ def destination_folder(tmpdir):
     create_structure(str(tmpdir), structure)
 
     return str(tmpdir.join("destination"))
+
+
+@pytest.fixture
+def trigger_object():
+    class TriggerObject:
+        def __init__(self):
+            self.steps = 0
+
+        def step_progress_bar(self):
+            self.steps += 1
+
+    return TriggerObject()

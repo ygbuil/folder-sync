@@ -5,7 +5,7 @@ from pathlib import Path
 from . import objects
 
 
-def main(origin_root_path, destination_root_path):
+def main(origin_root_path, destination_root_path, trigger_object):
     """
     Entire pipeline. Checks differences between master and clone folder and
     sets clone to be in the same status as master.
@@ -22,6 +22,9 @@ def main(origin_root_path, destination_root_path):
     None.
 
     """
+    # fake start for the progress bar
+    objects.update_progress_bar_fake(steps=10, trigger_object=trigger_object)
+
     origin_root_path, destination_root_path = (
         Path(origin_root_path),
         Path(destination_root_path),
@@ -37,7 +40,9 @@ def main(origin_root_path, destination_root_path):
         destination_sub_paths=destination_sub_paths,
     )
     objects.delete_paths(
-        paths_to_delete=paths_to_delete, destination_root_path=destination_root_path
+        paths_to_delete=paths_to_delete,
+        destination_root_path=destination_root_path,
+        trigger_object=trigger_object,
     )
 
     # copy files present in master but not in clone
@@ -49,11 +54,15 @@ def main(origin_root_path, destination_root_path):
         origin_root_path=origin_root_path,
         destination_root_path=destination_root_path,
         paths_to_copy=paths_to_copy,
+        trigger_object=trigger_object,
     )
 
     # check if both folders are equal
     exit_code, exit_message = objects.test_if_sucessful(
         origin_root_path=origin_root_path, destination_root_path=destination_root_path
     )
+
+    # fake finish for the progress bar
+    objects.update_progress_bar_fake(steps=9, trigger_object=trigger_object)
 
     return exit_code, exit_message
