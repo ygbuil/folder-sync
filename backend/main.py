@@ -1,5 +1,4 @@
 # libraries
-import time
 from pathlib import Path
 
 # local libraries
@@ -23,10 +22,8 @@ def main(origin_root_path, destination_root_path, trigger_object):
     None.
 
     """
-    print("Start fake begining")
-    for _ in range(10):
-        time.sleep(0.1)
-        trigger_object.step_progress_bar()
+    # fake start for the progress bar
+    objects.update_progress_bar_fake(steps=10, trigger_object=trigger_object)
 
     origin_root_path, destination_root_path = (
         Path(origin_root_path),
@@ -42,7 +39,6 @@ def main(origin_root_path, destination_root_path, trigger_object):
         origin_sub_paths=origin_sub_paths,
         destination_sub_paths=destination_sub_paths,
     )
-    print("Start delete")
     objects.delete_paths(
         paths_to_delete=paths_to_delete,
         destination_root_path=destination_root_path,
@@ -54,7 +50,6 @@ def main(origin_root_path, destination_root_path, trigger_object):
     paths_to_copy = objects.get_paths_to_copy(
         origin_sub_paths=origin_sub_paths, destination_sub_paths=destination_sub_paths
     )
-    print("Start copy")
     objects.copy_paths(
         origin_root_path=origin_root_path,
         destination_root_path=destination_root_path,
@@ -66,11 +61,8 @@ def main(origin_root_path, destination_root_path, trigger_object):
     exit_code, exit_message = objects.test_if_sucessful(
         origin_root_path=origin_root_path, destination_root_path=destination_root_path
     )
-    print("Start fake end")
-    for _ in range(9):
-        time.sleep(0.1)
-        trigger_object.step_progress_bar()
 
-    print(exit_code, exit_message)
+    # fake finish for the progress bar
+    objects.update_progress_bar_fake(steps=9, trigger_object=trigger_object)
 
     return exit_code, exit_message

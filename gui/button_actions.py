@@ -119,9 +119,8 @@ def start_backup(origin_directory, destination_directory, trigger_object):
             trigger_object=trigger_object,
         )
 
-    except Exception as e:
-        # exit_message = "Backup could not be completed."
-        exit_message = e
+    except Exception:
+        exit_message = "Backup could not be completed."
 
     trigger_object.exit_message = exit_message
     trigger_object.progress_bar.destroy()

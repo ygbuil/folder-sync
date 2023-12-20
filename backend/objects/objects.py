@@ -3,6 +3,11 @@ import os
 import time
 import shutil
 
+from backend.objects.constants import (
+    PROGRESS_BAR_FAKE_SLEEP_TIME,
+    PROGRESS_BAR_INITIAL_UPDATE_STEPS,
+)
+
 
 def get_sub_paths(path):
     """
@@ -89,19 +94,22 @@ def delete_paths(paths_to_delete, destination_root_path, trigger_object):
     None.
 
     """
-    steps_remaining, mini_step = calculate_steps(paths=paths_to_delete)
+    progress_bar_update_steps = PROGRESS_BAR_INITIAL_UPDATE_STEPS
     counter = 0
+    mini_step = calculate_steps(
+        paths=paths_to_delete, progress_bar_update_steps=progress_bar_update_steps
+    )
 
     # delete files
     for f in paths_to_delete["files"]:
         os.remove(destination_root_path / f)
         print(f"Deleted file: {f}")
 
-        counter, steps_remaining = update_progress_bar(
+        counter, progress_bar_update_steps = update_progress_bar(
             counter=counter,
+            progress_bar_update_steps=progress_bar_update_steps,
             mini_step=mini_step,
             trigger_object=trigger_object,
-            steps_remaining=steps_remaining,
         )
 
     # delete directories
@@ -109,17 +117,16 @@ def delete_paths(paths_to_delete, destination_root_path, trigger_object):
         shutil.rmtree(destination_root_path / d)
         print(f"Deleted directory: {d}")
 
-        counter, steps_remaining = update_progress_bar(
+        counter, progress_bar_update_steps = update_progress_bar(
             counter=counter,
+            progress_bar_update_steps=progress_bar_update_steps,
             mini_step=mini_step,
             trigger_object=trigger_object,
-            steps_remaining=steps_remaining,
         )
 
     handle_remaining_steps(
+        progress_bar_update_steps=progress_bar_update_steps,
         trigger_object=trigger_object,
-        mini_step=mini_step,
-        steps_remaining=steps_remaining,
     )
 
 
@@ -176,36 +183,37 @@ def copy_paths(origin_root_path, destination_root_path, paths_to_copy, trigger_o
     None.
 
     """
-    steps_remaining, mini_step = calculate_steps(paths=paths_to_copy)
-    print(steps_remaining, mini_step)
+    progress_bar_update_steps = PROGRESS_BAR_INITIAL_UPDATE_STEPS
     counter = 0
+    mini_step = calculate_steps(
+        paths=paths_to_copy, progress_bar_update_steps=progress_bar_update_steps
+    )
 
     for d in paths_to_copy["dirs"]:
         os.makedirs(destination_root_path / d)
         print(f"Created directory: {d}")
 
-        counter, steps_remaining = update_progress_bar(
+        counter, progress_bar_update_steps = update_progress_bar(
             counter=counter,
+            progress_bar_update_steps=progress_bar_update_steps,
             mini_step=mini_step,
             trigger_object=trigger_object,
-            steps_remaining=steps_remaining,
         )
 
     for f in paths_to_copy["files"]:
         shutil.copy2(origin_root_path / f, destination_root_path / f)
         print(f"Copied file: {f}")
 
-        counter, steps_remaining = update_progress_bar(
+        counter, progress_bar_update_steps = update_progress_bar(
             counter=counter,
+            progress_bar_update_steps=progress_bar_update_steps,
             mini_step=mini_step,
             trigger_object=trigger_object,
-            steps_remaining=steps_remaining,
         )
 
     handle_remaining_steps(
+        progress_bar_update_steps=progress_bar_update_steps,
         trigger_object=trigger_object,
-        mini_step=mini_step,
-        steps_remaining=steps_remaining,
     )
 
 
@@ -235,33 +243,31 @@ def test_if_sucessful(origin_root_path, destination_root_path):
         return 1, "Something went wrong. Origin and destination folders are not equal."
 
 
-def calculate_steps(paths):
-    steps_remaining = len(paths["files"]) + len(paths["dirs"])
-    mini_step = steps_remaining // 40
+def calculate_steps(paths, progress_bar_update_steps):
+    n_iterations = len(paths["files"]) + len(paths["dirs"])
+    mini_step = n_iterations // progress_bar_update_steps + 1
 
-    return steps_remaining, mini_step
+    return mini_step
 
 
-def update_progress_bar(counter, mini_step, trigger_object, steps_remaining):
+def update_progress_bar(counter, progress_bar_update_steps, mini_step, trigger_object):
     counter += 1
-    # if initial value for steps_remaining was greater than 40
+    # if initial value for steps_remaining > progress_bar_update_steps
     if mini_step > 0:
         if counter % mini_step == 0:
             trigger_object.step_progress_bar()
-            steps_remaining -= mini_step
+            progress_bar_update_steps -= 1
 
-    return counter, steps_remaining
+    return counter, progress_bar_update_steps
 
 
-def handle_remaining_steps(trigger_object, mini_step, steps_remaining):
-    # if initial value for steps_remaining was smaller than 40
-    if mini_step == 0:
-        for _ in range(40):
-            time.sleep(0.1)
-            trigger_object.step_progress_bar()
+def handle_remaining_steps(progress_bar_update_steps, trigger_object):
+    for _ in range(progress_bar_update_steps):
+        time.sleep(0.001)
+        trigger_object.step_progress_bar()
 
-    # if initial value for steps_remaining was greater than 40 but still there are some steps missing
-    elif steps_remaining > 0:
-        for _ in range(steps_remaining):
-            time.sleep(0.1)
-            trigger_object.step_progress_bar()
+
+def update_progress_bar_fake(steps, trigger_object):
+    for _ in range(steps):
+        time.sleep(PROGRESS_BAR_FAKE_SLEEP_TIME)
+        trigger_object.step_progress_bar()
