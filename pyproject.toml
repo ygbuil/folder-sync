@@ -6,7 +6,7 @@ authors = ["Llorenç Buil Fustagueras"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.11.6"
 customtkinter = "^5.2.1"
 pre-commit = "^3.6.0"
 pillow = "^10.1.0"

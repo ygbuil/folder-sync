@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from PIL import Image
+from constants import PROGRESSBAR_COLOR, LABEL_OFFSET
 
 
 class Window:
@@ -71,7 +72,7 @@ class DirectorySelector:
             master=self.window,
             text=cache[self.selector_type],
         )
-        directory_label.place(x=self.x + 170, y=self.y - 1)
+        directory_label.place(x=self.x + LABEL_OFFSET, y=self.y - 1)
         self.__dict__["directory_label"] = directory_label
 
 
@@ -109,10 +110,13 @@ class TriggerObject:
 
     def define_progressbar(self, width):
         progress_bar = ctk.CTkProgressBar(
-            self.window, determinate_speed=0.5, width=width
+            self.window,
+            determinate_speed=0.5,
+            progress_color=PROGRESSBAR_COLOR,
+            width=width,
         )
         progress_bar.set(0)
-        progress_bar.place(x=self.x + 170, y=self.y + 17)
+        progress_bar.place(x=self.x + LABEL_OFFSET, y=self.y + 17)
         self.__dict__["progress_bar"] = progress_bar
 
     def step_progress_bar(self):
@@ -123,7 +127,7 @@ class TriggerObject:
             master=self.window,
             text=self.exit_message,
         )
-        exit_message_label.place(x=self.x + 170, y=self.y + 5)
+        exit_message_label.place(x=self.x + LABEL_OFFSET, y=self.y + 5)
         self.exit_message_label = exit_message_label
 
 

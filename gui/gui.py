@@ -22,6 +22,8 @@ from constants import (
     Y_ARROW,
     X_ORIGIN_SELECTOR,
     Y_ORIGIN_SELECTOR,
+    TRIGGER_BUTTON_WIDTH,
+    DIRECTORY_SELECTOR_BUTTON_WIDTH,
     DIRECTORY_SELECTOR_BUTTON_COLOR,
     DIRECTORY_SELECTOR_BUTTON_HOVER_COLOR,
     X_DESTINATION_SELECTOR,
@@ -65,7 +67,7 @@ origin_selector = (
         command=lambda: button_actions.choose_directory(
             cache=cache, directory_selector=origin_selector
         ),
-        width=160,
+        width=DIRECTORY_SELECTOR_BUTTON_WIDTH,
         fg_color=DIRECTORY_SELECTOR_BUTTON_COLOR,
         hover_color=DIRECTORY_SELECTOR_BUTTON_HOVER_COLOR,
     )
@@ -82,11 +84,11 @@ destination_selector = (
         y=Y_DESTINATION_SELECTOR,
     )
     .build_button(
-        text="Choose Origin Folder",
+        text="Choose Destination Folder",
         command=lambda: button_actions.choose_directory(
             cache=cache, directory_selector=destination_selector
         ),
-        width=160,
+        width=DIRECTORY_SELECTOR_BUTTON_WIDTH,
         fg_color=DIRECTORY_SELECTOR_BUTTON_COLOR,
         hover_color=DIRECTORY_SELECTOR_BUTTON_HOVER_COLOR,
     )
@@ -102,7 +104,7 @@ trigger_object = (
         command=lambda: button_actions.open_warning_window(
             root=root, cache=cache, trigger_object=trigger_object
         ),
-        width=160,
+        width=TRIGGER_BUTTON_WIDTH,
         height=40,
         fg_color=TRIGGER_BUTTON_COLOR,
         hover_color=TRIGGER_BUTTON_HOVER_COLOR,
