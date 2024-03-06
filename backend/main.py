@@ -5,7 +5,7 @@ from pathlib import Path
 from . import objects
 
 
-def main(origin_root_path, destination_root_path, trigger_object):
+def main(origin_root_path, destination_root_path, trigger_object=None):
     """
     Entire pipeline. Checks differences between master and clone folder and
     sets clone to be in the same status as master.
@@ -23,7 +23,8 @@ def main(origin_root_path, destination_root_path, trigger_object):
 
     """
     # fake start for the progress bar
-    objects.update_progress_bar_fake(steps=10, trigger_object=trigger_object)
+    if trigger_object:
+        objects.update_progress_bar_fake(steps=10, trigger_object=trigger_object)
 
     origin_root_path, destination_root_path = (
         Path(origin_root_path),
@@ -63,6 +64,7 @@ def main(origin_root_path, destination_root_path, trigger_object):
     )
 
     # fake finish for the progress bar
-    objects.update_progress_bar_fake(steps=9, trigger_object=trigger_object)
+    if trigger_object:
+        objects.update_progress_bar_fake(steps=9, trigger_object=trigger_object)
 
     return exit_code, exit_message

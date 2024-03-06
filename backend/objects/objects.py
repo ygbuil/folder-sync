@@ -9,7 +9,7 @@ from backend.objects.constants import (
 )
 
 
-def get_sub_paths(path):
+def get_sub_paths(path, edit_time_sensitive=False):
     """
     Get all the sub paths inside path.
 
@@ -22,17 +22,23 @@ def get_sub_paths(path):
     -------
     sub_paths : dict
         Dictionary containing sub paths for both directories and files in path.
+    edit_time_sensitive : bool
+        Take into account last time edited file or not.
 
     """
     path_dirs = []
     path_files = []
 
     for p in path.glob("**/*"):
-        if p.name not in [".DS_Store"]:
+        if not p.name.startswith("."):
             if p.is_dir():
                 path_dirs.append(p.relative_to(path))
             elif p.is_file():
-                path_files.append((p.relative_to(path), p.stat().st_mtime))
+                path_files.append(
+                    (p.relative_to(path), p.stat().st_mtime)
+                    if edit_time_sensitive
+                    else (p.relative_to(path), None)
+                )
 
     path_dirs.sort()
     path_files.sort()
@@ -103,31 +109,34 @@ def delete_paths(paths_to_delete, destination_root_path, trigger_object):
     # delete files
     for f in paths_to_delete["files"]:
         os.remove(destination_root_path / f)
-        print(f"Deleted file: {f}")
+        print(f"Deleted file: {destination_root_path / f}")
 
-        counter, progress_bar_update_steps = update_progress_bar(
-            counter=counter,
-            progress_bar_update_steps=progress_bar_update_steps,
-            mini_step=mini_step,
-            trigger_object=trigger_object,
-        )
+        if trigger_object:
+            counter, progress_bar_update_steps = update_progress_bar(
+                counter=counter,
+                progress_bar_update_steps=progress_bar_update_steps,
+                mini_step=mini_step,
+                trigger_object=trigger_object,
+            )
 
     # delete directories
     for d in paths_to_delete["dirs"]:
         shutil.rmtree(destination_root_path / d)
-        print(f"Deleted directory: {d}")
+        print(f"Deleted directory: {destination_root_path / d}")
 
-        counter, progress_bar_update_steps = update_progress_bar(
-            counter=counter,
+        if trigger_object:
+            counter, progress_bar_update_steps = update_progress_bar(
+                counter=counter,
+                progress_bar_update_steps=progress_bar_update_steps,
+                mini_step=mini_step,
+                trigger_object=trigger_object,
+            )
+
+    if trigger_object:
+        handle_remaining_steps(
             progress_bar_update_steps=progress_bar_update_steps,
-            mini_step=mini_step,
             trigger_object=trigger_object,
         )
-
-    handle_remaining_steps(
-        progress_bar_update_steps=progress_bar_update_steps,
-        trigger_object=trigger_object,
-    )
 
 
 def get_paths_to_copy(origin_sub_paths, destination_sub_paths):
@@ -193,28 +202,31 @@ def copy_paths(origin_root_path, destination_root_path, paths_to_copy, trigger_o
         os.makedirs(destination_root_path / d)
         print(f"Created directory: {d}")
 
-        counter, progress_bar_update_steps = update_progress_bar(
-            counter=counter,
-            progress_bar_update_steps=progress_bar_update_steps,
-            mini_step=mini_step,
-            trigger_object=trigger_object,
-        )
+        if trigger_object:
+            counter, progress_bar_update_steps = update_progress_bar(
+                counter=counter,
+                progress_bar_update_steps=progress_bar_update_steps,
+                mini_step=mini_step,
+                trigger_object=trigger_object,
+            )
 
     for f in paths_to_copy["files"]:
         shutil.copy2(origin_root_path / f, destination_root_path / f)
         print(f"Copied file: {f}")
 
-        counter, progress_bar_update_steps = update_progress_bar(
-            counter=counter,
+        if trigger_object:
+            counter, progress_bar_update_steps = update_progress_bar(
+                counter=counter,
+                progress_bar_update_steps=progress_bar_update_steps,
+                mini_step=mini_step,
+                trigger_object=trigger_object,
+            )
+
+    if trigger_object:
+        handle_remaining_steps(
             progress_bar_update_steps=progress_bar_update_steps,
-            mini_step=mini_step,
             trigger_object=trigger_object,
         )
-
-    handle_remaining_steps(
-        progress_bar_update_steps=progress_bar_update_steps,
-        trigger_object=trigger_object,
-    )
 
 
 def test_if_sucessful(origin_root_path, destination_root_path):
