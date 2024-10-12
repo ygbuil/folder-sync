@@ -1,11 +1,23 @@
 # libraries
 from pathlib import Path
-
+from typing import Literal
+import click
 # local libraries
-from . import objects
+from backend import objects
 
+@click.command()
+@click.option("--origin-root-path")
+@click.option("--destination-root-path")
+def pipeline(origin_root_path: str, destination_root_path: str) -> str:
+    """Entry point to say hello.
 
-def main(origin_root_path, destination_root_path, trigger_object=None):
+    :param name: Name.
+    :param surname: Surname.
+    :return: Greet.
+    """
+    return _pipeline(origin_root_path, destination_root_path)
+
+def _pipeline(origin_root_path, destination_root_path, trigger_object=None) -> tuple[Literal[0, 1], str]:
     """
     Entire pipeline. Checks differences between master and clone folder and
     sets clone to be in the same status as master.

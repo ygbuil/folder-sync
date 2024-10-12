@@ -1,17 +1,16 @@
 {
     "version": "2.0.0",
-    "configurations": [
+    "tasks": [
         {
-            "name": "pipeline",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "backend",
-            "justMyCode": false,
+            "label": "pipeline",
+            "type": "shell",
+            "command": "backend",
             "args": [
                 "pipeline",
                 "--origin-root-path", "/Users/ygbuil/Documents/origin",
                 "--destination-root-path", "/Volumes/destination",
             ],
+            "problemMatcher": []
         }
-    ],
+    ]
 }
