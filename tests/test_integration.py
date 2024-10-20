@@ -1,4 +1,5 @@
 import pytest
+
 from backend import objects
 
 
@@ -12,10 +13,11 @@ from backend import objects
         ({"files": range(116), "dirs": range(1)}, 1),
     ],
 )
-def test_progress_bar_update(paths, progress_bar_update_steps, trigger_object):
+def test_progress_bar_update(paths, progress_bar_update_steps, trigger_object) -> None:
     result = progress_bar_update_steps
     mini_step = objects.calculate_steps(
-        paths=paths, progress_bar_update_steps=progress_bar_update_steps
+        paths=paths,
+        progress_bar_update_steps=progress_bar_update_steps,
     )
 
     counter = 0
