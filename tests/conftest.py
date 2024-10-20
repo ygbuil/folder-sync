@@ -1,6 +1,6 @@
 """Fixtures for testing."""
 import os
-
+from pathlib import Path
 import pytest
 
 
@@ -55,10 +55,10 @@ def _create_structure(base_path: str, items: dict) -> None:
     :returns: None.
     """
     for name, content in items.items():
-        path = os.path.join(base_path, name)
+        path = Path(base_path) / Path(name)
         if isinstance(content, dict):
-            os.mkdir(path)
+            Path.mkdir(path)
             _create_structure(path, content)
         else:
-            with open(path, "w") as file:
+            with Path.open(path, "w") as file:
                 file.write(content)
