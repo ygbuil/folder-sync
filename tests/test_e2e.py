@@ -1,5 +1,5 @@
 """e2e testing."""
-from backend.entry_points._pipeline import _pipeline
+from folder_sync.entry_points._pipeline import _pipeline
 
 
 def test_pipeline(origin_folder: str, destination_folder: str) -> None:

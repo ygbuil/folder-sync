@@ -6,7 +6,7 @@ import sys
 import click
 
 sys.path.append(os.getcwd())  # noqa: PTH109
-from backend import entry_points  # noqa: E402
+from folder_sync import entry_points  # noqa: E402
 
 
 def _main() -> None:

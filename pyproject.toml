@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "backend"
+name = "folder-sync"
 version = "0.1.0"
 description = "Track differences between 2 folder and create a backup."
 authors = ["Llorenç Buil Fustagueras"]
 readme = "README.md"
 
 [tool.poetry.scripts]
-backend = "backend.__main__:_main"
+folder-sync = "folder_sync.__main__:_main"
 
 [tool.poetry.dependencies]
 python = "^3.11.6"
