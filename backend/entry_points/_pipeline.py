@@ -23,7 +23,6 @@ def pipeline(origin_root_path: str, destination_root_path: str) -> str:
 def _pipeline(
     origin_root_path: str,
     destination_root_path: str,
-    trigger_object=None,
 ) -> tuple[Literal[0, 1], str]:
     """Entire pipeline. Checks differences between master and clone folder and
     sets clone to be in the same status as master.
@@ -40,10 +39,6 @@ def _pipeline(
     None.
 
     """
-    # fake start for the progress bar
-    if trigger_object:
-        objects.update_progress_bar_fake(steps=10, trigger_object=trigger_object)
-
     origin_root_path, destination_root_path = (
         Path(origin_root_path),
         Path(destination_root_path),
@@ -61,7 +56,6 @@ def _pipeline(
     objects.delete_paths(
         paths_to_delete=paths_to_delete,
         destination_root_path=destination_root_path,
-        trigger_object=trigger_object,
     )
 
     # copy files present in master but not in clone
@@ -74,7 +68,6 @@ def _pipeline(
         origin_root_path=origin_root_path,
         destination_root_path=destination_root_path,
         paths_to_copy=paths_to_copy,
-        trigger_object=trigger_object,
     )
 
     # check if both folders are equal
@@ -82,10 +75,6 @@ def _pipeline(
         origin_root_path=origin_root_path,
         destination_root_path=destination_root_path,
     )
-
-    # fake finish for the progress bar
-    if trigger_object:
-        objects.update_progress_bar_fake(steps=9, trigger_object=trigger_object)
 
     logger.info(f"{exit_code}. {exit_message}")
 

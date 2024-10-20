@@ -1,5 +1,6 @@
-import pytest
 import os
+
+import pytest
 
 
 def create_structure(base_path, items):
@@ -13,7 +14,7 @@ def create_structure(base_path, items):
                 file.write(content)
 
 
-@pytest.fixture
+@pytest.fixture()
 def origin_folder(tmpdir):
     structure = {
         "origin": {
@@ -21,7 +22,7 @@ def origin_folder(tmpdir):
             "file_2.txt": "",
             "folder_1": {"file_3.txt": "", "file_4.txt": ""},
             "folder_2": {},
-        }
+        },
     }
 
     create_structure(str(tmpdir), structure)
@@ -29,7 +30,7 @@ def origin_folder(tmpdir):
     return str(tmpdir.join("origin"))
 
 
-@pytest.fixture
+@pytest.fixture()
 def destination_folder(tmpdir):
     structure = {
         "destination": {
@@ -38,21 +39,9 @@ def destination_folder(tmpdir):
             "file_to_delete_1.txt": "",
             "folder_1": {"file_3.txt": "", "file_to_delete_2.txt": ""},
             "folder_to_delete_1": {},
-        }
+        },
     }
 
     create_structure(str(tmpdir), structure)
 
     return str(tmpdir.join("destination"))
-
-
-@pytest.fixture
-def trigger_object():
-    class TriggerObject:
-        def __init__(self):
-            self.steps = 0
-
-        def step_progress_bar(self):
-            self.steps += 1
-
-    return TriggerObject()
