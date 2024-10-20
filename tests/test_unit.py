@@ -1,4 +1,5 @@
 import os
+
 import pytest
 
 
@@ -14,7 +15,7 @@ import pytest
         ["folder_2"],
     ],
 )
-def test_origin_folder_creation(origin_folder, subsequent_dir):
+def test_origin_folder_creation(origin_folder: str, subsequent_dir: list) -> None:
     assert os.path.exists(os.path.join(origin_folder, *subsequent_dir))
 
 
@@ -31,5 +32,5 @@ def test_origin_folder_creation(origin_folder, subsequent_dir):
         ["folder_to_delete_1"],
     ],
 )
-def test_destination_folder_creation(destination_folder, subsequent_dir):
+def test_destination_folder_creation(destination_folder: str, subsequent_dir: list) -> None:
     assert os.path.exists(os.path.join(destination_folder, *subsequent_dir))

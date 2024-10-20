@@ -1,21 +1,16 @@
+"""Fixtures for testing."""
 import os
 
 import pytest
 
 
-def create_structure(base_path, items):
-    for name, content in items.items():
-        path = os.path.join(base_path, name)
-        if isinstance(content, dict):
-            os.mkdir(path)
-            create_structure(path, content)
-        else:
-            with open(path, "w") as file:
-                file.write(content)
-
-
 @pytest.fixture()
-def origin_folder(tmpdir):
+def origin_folder(tmpdir: str) -> str:
+    """Create folder structure for origin directory.
+
+    :param tmpdir: Temporary directory used by pytest.
+    :returns: tmpdir and origin.
+    """
     structure = {
         "origin": {
             "file_1.txt": "",
@@ -25,13 +20,18 @@ def origin_folder(tmpdir):
         },
     }
 
-    create_structure(str(tmpdir), structure)
+    _create_structure(str(tmpdir), structure)
 
     return str(tmpdir.join("origin"))
 
 
 @pytest.fixture()
-def destination_folder(tmpdir):
+def destination_folder(tmpdir: str) -> str:
+    """Create folder structure for destination directory.
+
+    :param tmpdir: Temporary directory used by pytest.
+    :returns: tmpdir and destination.
+    """
     structure = {
         "destination": {
             "file_1.txt": "",
@@ -42,6 +42,23 @@ def destination_folder(tmpdir):
         },
     }
 
-    create_structure(str(tmpdir), structure)
+    _create_structure(str(tmpdir), structure)
 
     return str(tmpdir.join("destination"))
+
+
+def _create_structure(base_path: str, items: dict) -> None:
+    """Create file structure for testing.
+
+    :param base_path: Base path to create the forlder structure.
+    :param items: Dictionary with all the nested folder and files.
+    :returns: None.
+    """
+    for name, content in items.items():
+        path = os.path.join(base_path, name)
+        if isinstance(content, dict):
+            os.mkdir(path)
+            _create_structure(path, content)
+        else:
+            with open(path, "w") as file:
+                file.write(content)

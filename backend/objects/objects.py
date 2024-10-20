@@ -6,7 +6,7 @@ from pathlib import Path
 from loguru import logger
 
 
-def get_sub_paths(path: Path, edit_time_sensitive: bool = False) -> dict[str, list]:
+def get_sub_paths(path: Path, edit_time_sensitive: bool = False) -> dict[str, list]:  # noqa: FBT001, FBT002
     """Get all the sub paths inside path.
 
     :param path: Path to search for sub paths.
@@ -37,7 +37,7 @@ def get_paths_paths_to_delete(
     origin_sub_paths: list,
     destination_sub_paths: list,
 ) -> dict[str, list]:
-    """Gets directories and files present in clone but missing in master, since
+    """Get directories and files present in clone but missing in master, since
     they will need to be deleted from clone.
 
     :param origin_sub_paths: Sub paths of master.
@@ -57,7 +57,7 @@ def get_paths_paths_to_delete(
 
 
 def delete_paths(paths_to_delete: dict, destination_root_path: Path) -> None:
-    """Executes commands to delete the paths_to_delete.
+    """Execute commands to delete the paths_to_delete.
 
     :param paths_to_delete: Dictionary containing the directories and files to delete.
     :param destination_root_path: Root path of the clone folder.
@@ -75,7 +75,7 @@ def delete_paths(paths_to_delete: dict, destination_root_path: Path) -> None:
 
 
 def get_paths_to_copy(origin_sub_paths: list, destination_sub_paths: list) -> dict[str, list]:
-    """Gets directories and files present in master but missing in clone, since
+    """Get directories and files present in master but missing in clone, since
     they will need to be copied from master to clone.
 
     :param origin_sub_paths: Sub paths of master.
@@ -90,13 +90,11 @@ def get_paths_to_copy(origin_sub_paths: list, destination_sub_paths: list) -> di
     # sort in order to avoid creating a sub folder before a root folder
     dirs_to_copy.sort()
 
-    paths_to_copy = {"dirs": dirs_to_copy, "files": files_to_copy}
-
-    return paths_to_copy
+    return {"dirs": dirs_to_copy, "files": files_to_copy}
 
 
 def copy_paths(origin_root_path: Path, destination_root_path: Path, paths_to_copy: list) -> None:
-    """Executes commands to copy the paths_to_copy.
+    """Execute commands to copy the paths_to_copy.
 
     :param origin_root_path: Root path of the master folder.
     :param destination_root_path: Root path of the clone folder.
@@ -125,5 +123,5 @@ def test_if_sucessful(origin_root_path: Path, destination_root_path: Path) -> tu
 
     if origin_sub_paths == destination_sub_paths:
         return 0, "Process successful, both folders are now equal!"
-    else:
-        return 1, "Something went wrong. Origin and destination folders are not equal."
+
+    return 1, "Something went wrong. Origin and destination folders are not equal."
