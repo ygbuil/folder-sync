@@ -1,3 +1,4 @@
+"""Objects."""
 import os
 import shutil
 from pathlib import Path
@@ -5,21 +6,12 @@ from pathlib import Path
 from loguru import logger
 
 
-def get_sub_paths(path, edit_time_sensitive=False) -> dict[str, list]:
+def get_sub_paths(path: Path, edit_time_sensitive: bool = False) -> dict[str, list]:
     """Get all the sub paths inside path.
 
-    Parameters
-    ----------
-    path : pathlib object
-        path.
-
-    Returns
-    -------
-    sub_paths : dict
-        Dictionary containing sub paths for both directories and files in path.
-    edit_time_sensitive : bool
-        Take into account last time edited file or not.
-
+    :param path: Path to search for sub paths.
+    :param edit_time_sensitive: Whether to take into account the file edit time or not.
+    :returns: Dictionary containing sub paths for both directories and files in the path.
     """
     path_dirs = []
     path_files = []
@@ -48,18 +40,9 @@ def get_paths_paths_to_delete(
     """Gets directories and files present in clone but missing in master, since
     they will need to be deleted from clone.
 
-    Parameters
-    ----------
-    origin_sub_paths : list
-        Sub paths of master.
-    destination_sub_paths : list
-        Sub paths of clone.
-
-    Returns
-    -------
-    paths_to_delete : dict
-        Dictionary containing the directories and files to delete.
-
+    :param origin_sub_paths: Sub paths of master.
+    :param destination_sub_paths: Sub paths of clone.
+    :returns: Dictionary containing the directories and files to delete.
     """
     # destination_sub_paths paths not present in origin_sub_paths
     dirs_to_delete = [x for x in destination_sub_paths["dirs"] if x not in origin_sub_paths["dirs"]]
@@ -76,17 +59,9 @@ def get_paths_paths_to_delete(
 def delete_paths(paths_to_delete: dict, destination_root_path: Path) -> None:
     """Executes commands to delete the paths_to_delete.
 
-    Parameters
-    ----------
-    paths_to_delete : dict
-        Dictionary containing the directories and files to delete.
-    destination_root_path : pathlib object
-        Root path of clone folder.
-
-    Returns
-    -------
-    None.
-
+    :param paths_to_delete: Dictionary containing the directories and files to delete.
+    :param destination_root_path: Root path of the clone folder.
+    :returns: None.
     """
     # delete files
     for f in paths_to_delete["files"]:
@@ -103,18 +78,9 @@ def get_paths_to_copy(origin_sub_paths: list, destination_sub_paths: list) -> di
     """Gets directories and files present in master but missing in clone, since
     they will need to be copied from master to clone.
 
-    Parameters
-    ----------
-    origin_sub_paths : list
-        Sub paths of master.
-    destination_sub_paths : list
-        Sub paths of clone.
-
-    Returns
-    -------
-    paths_to_copy : dict
-        Dictionary containing the directories and files to delete.
-
+    :param origin_sub_paths: Sub paths of master.
+    :param destination_sub_paths: Sub paths of clone.
+    :returns: Dictionary containing the directories and files to copy.
     """
     dirs_to_copy = [x for x in origin_sub_paths["dirs"] if x not in destination_sub_paths["dirs"]]
     files_to_copy = [
@@ -132,19 +98,10 @@ def get_paths_to_copy(origin_sub_paths: list, destination_sub_paths: list) -> di
 def copy_paths(origin_root_path: Path, destination_root_path: Path, paths_to_copy: list) -> None:
     """Executes commands to copy the paths_to_copy.
 
-    Parameters
-    ----------
-    origin_root_path : pathlib object
-        Root path of master folder.
-    destination_root_path : pathlib object
-        Root path of clone folder.
-    paths_to_copy : dict
-        Dictionary containing the directories and files to delete.
-
-    Returns
-    -------
-    None.
-
+    :param origin_root_path: Root path of the master folder.
+    :param destination_root_path: Root path of the clone folder.
+    :param paths_to_copy: Dictionary containing the directories and files to copy.
+    :returns: None.
     """
     for d in paths_to_copy["dirs"]:
         os.makedirs(destination_root_path / d)
@@ -156,20 +113,12 @@ def copy_paths(origin_root_path: Path, destination_root_path: Path, paths_to_cop
 
 
 def test_if_sucessful(origin_root_path: Path, destination_root_path: Path) -> tuple[int, str]:
-    """Checks if the process went successfully, that is, master and clone folders
-    are equal after all the change.
+    """Checks if the process went successfully, meaning the master and clone folders
+    are equal after all the changes.
 
-    Parameters
-    ----------
-    origin_root_path : pathlib object
-        Root path of master folder.
-    destination_root_path : pathlib object
-        Root path of clone folder.
-
-    Returns
-    -------
-    None.
-
+    :param origin_root_path: Root path of the master folder.
+    :param destination_root_path: Root path of the clone folder.
+    :returns: None.
     """
     origin_sub_paths = get_sub_paths(path=origin_root_path)
     destination_sub_paths = get_sub_paths(path=destination_root_path)

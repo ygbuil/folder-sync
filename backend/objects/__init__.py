@@ -1,3 +1,5 @@
+"""__init__.py for objects module."""
+
 from .objects import (
     copy_paths,
     delete_paths,
