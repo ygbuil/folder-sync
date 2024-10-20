@@ -23,7 +23,7 @@ def test_origin_folder_creation(origin_folder: str, subsequent_dir: list) -> Non
     :param subsequent_dir: Folder structure inside origin_folder.
     :returns: None.
     """
-    assert os.path.exists(os.path.join(origin_folder, *subsequent_dir))
+    assert os.path.exists(os.path.join(origin_folder, *subsequent_dir))  # noqa: PTH110, PTH118
 
 
 @pytest.mark.parametrize(
@@ -46,4 +46,4 @@ def test_destination_folder_creation(destination_folder: str, subsequent_dir: li
     :param subsequent_dir: Folder structure inside destination_folder.
     :returns: None.
     """
-    assert os.path.exists(os.path.join(destination_folder, *subsequent_dir))
+    assert os.path.exists(os.path.join(destination_folder, *subsequent_dir))  # noqa: PTH110, PTH118
