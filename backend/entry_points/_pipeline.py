@@ -1,10 +1,9 @@
-# libraries
 from pathlib import Path
 from typing import Literal
+
 import click
 from loguru import logger
 
-# local libraries
 from backend import objects
 
 
@@ -22,10 +21,11 @@ def pipeline(origin_root_path: str, destination_root_path: str) -> str:
 
 
 def _pipeline(
-    origin_root_path, destination_root_path, trigger_object=None
+    origin_root_path: str,
+    destination_root_path: str,
+    trigger_object=None,
 ) -> tuple[Literal[0, 1], str]:
-    """
-    Entire pipeline. Checks differences between master and clone folder and
+    """Entire pipeline. Checks differences between master and clone folder and
     sets clone to be in the same status as master.
 
     Parameters
@@ -67,7 +67,8 @@ def _pipeline(
     # copy files present in master but not in clone
     destination_sub_paths = objects.get_sub_paths(path=destination_root_path)
     paths_to_copy = objects.get_paths_to_copy(
-        origin_sub_paths=origin_sub_paths, destination_sub_paths=destination_sub_paths
+        origin_sub_paths=origin_sub_paths,
+        destination_sub_paths=destination_sub_paths,
     )
     objects.copy_paths(
         origin_root_path=origin_root_path,
@@ -78,7 +79,8 @@ def _pipeline(
 
     # check if both folders are equal
     exit_code, exit_message = objects.test_if_sucessful(
-        origin_root_path=origin_root_path, destination_root_path=destination_root_path
+        origin_root_path=origin_root_path,
+        destination_root_path=destination_root_path,
     )
 
     # fake finish for the progress bar

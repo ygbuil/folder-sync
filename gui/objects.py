@@ -1,6 +1,6 @@
 import customtkinter as ctk
+from constants import LABEL_OFFSET, PROGRESSBAR_COLOR
 from PIL import Image
-from constants import PROGRESSBAR_COLOR, LABEL_OFFSET
 
 
 class Window:
@@ -17,9 +17,7 @@ class Window:
         x_position = (self.window.winfo_screenwidth() - window_width) // 2
         y_position = (self.window.winfo_screenheight() - window_height) // 2
 
-        self.window.geometry(
-            f"{window_width}x{window_height}+{x_position}+{y_position}"
-        )
+        self.window.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
 
 
 class LeftMenu:
@@ -45,9 +43,7 @@ class LeftMenuBuilder:
         return self
 
     def build_label(self, text, font, side, padx, pady):
-        self.left_menu.define_label(
-            text=text, font=font, side=side, padx=padx, pady=pady
-        )
+        self.left_menu.define_label(text=text, font=font, side=side, padx=padx, pady=pady)
         return self
 
     def build(self):
@@ -79,7 +75,10 @@ class DirectorySelector:
 class DirectorySelectorBuilder:
     def __init__(self, window, selector_type, x, y):
         self.root_window_widget = DirectorySelector(
-            window=window, selector_type=selector_type, x=x, y=y
+            window=window,
+            selector_type=selector_type,
+            x=x,
+            y=y,
         )
 
     def build_button(self, text, command, **kwargs):

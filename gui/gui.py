@@ -1,42 +1,42 @@
 # ruff: noqa: E402
-import sys
 import os
+import sys
+
 import customtkinter as ctk
 
 sys.path.append(os.getcwd())
 
 import button_actions
-from objects import (
-    LeftMenuBuilder,
-    Window,
-    TriggerObjectBuilder,
-    DirectorySelectorBuilder,
-    add_image,
-)
+import utils
 from constants import (
     APP_NAME,
-    TITLE_FONT,
     ARROW_PATH,
     ARROW_SIZE,
-    X_ARROW,
-    Y_ARROW,
-    X_ORIGIN_SELECTOR,
-    Y_ORIGIN_SELECTOR,
-    TRIGGER_BUTTON_WIDTH,
-    DIRECTORY_SELECTOR_BUTTON_WIDTH,
     DIRECTORY_SELECTOR_BUTTON_COLOR,
     DIRECTORY_SELECTOR_BUTTON_HOVER_COLOR,
-    X_DESTINATION_SELECTOR,
-    Y_DESTINATION_SELECTOR,
-    TRIGGER_BUTTON_COLOR,
-    TRIGGER_BUTTON_HOVER_COLOR,
-    X_TRIGGER_BUTTON,
-    Y_TRIGGER_BUTTON,
+    DIRECTORY_SELECTOR_BUTTON_WIDTH,
     ROOT_WINDOW_HEIGHT,
     ROOT_WINDOW_WIDTH,
+    TITLE_FONT,
+    TRIGGER_BUTTON_COLOR,
+    TRIGGER_BUTTON_HOVER_COLOR,
+    TRIGGER_BUTTON_WIDTH,
+    X_ARROW,
+    X_DESTINATION_SELECTOR,
+    X_ORIGIN_SELECTOR,
+    X_TRIGGER_BUTTON,
+    Y_ARROW,
+    Y_DESTINATION_SELECTOR,
+    Y_ORIGIN_SELECTOR,
+    Y_TRIGGER_BUTTON,
 )
-import utils
-
+from objects import (
+    DirectorySelectorBuilder,
+    LeftMenuBuilder,
+    TriggerObjectBuilder,
+    Window,
+    add_image,
+)
 
 root = Window.create_window(window=ctk.CTk(), title=APP_NAME)
 cache = utils.read_cache()
@@ -50,9 +50,7 @@ left_menu = (
 )
 
 # down arrow
-add_image(
-    window=root.window, image_path=ARROW_PATH, size=ARROW_SIZE, x=X_ARROW, y=Y_ARROW
-)
+add_image(window=root.window, image_path=ARROW_PATH, size=ARROW_SIZE, x=X_ARROW, y=Y_ARROW)
 
 # origin selector
 origin_selector = (
@@ -65,7 +63,8 @@ origin_selector = (
     .build_button(
         text="Choose Origin Folder",
         command=lambda: button_actions.choose_directory(
-            cache=cache, directory_selector=origin_selector
+            cache=cache,
+            directory_selector=origin_selector,
         ),
         width=DIRECTORY_SELECTOR_BUTTON_WIDTH,
         fg_color=DIRECTORY_SELECTOR_BUTTON_COLOR,
@@ -86,7 +85,8 @@ destination_selector = (
     .build_button(
         text="Choose Destination Folder",
         command=lambda: button_actions.choose_directory(
-            cache=cache, directory_selector=destination_selector
+            cache=cache,
+            directory_selector=destination_selector,
         ),
         width=DIRECTORY_SELECTOR_BUTTON_WIDTH,
         fg_color=DIRECTORY_SELECTOR_BUTTON_COLOR,
@@ -102,7 +102,9 @@ trigger_object = (
     .build_button(
         text="Start Backup",
         command=lambda: button_actions.open_warning_window(
-            root=root, cache=cache, trigger_object=trigger_object
+            root=root,
+            cache=cache,
+            trigger_object=trigger_object,
         ),
         width=TRIGGER_BUTTON_WIDTH,
         height=40,
@@ -112,9 +114,7 @@ trigger_object = (
     .build()
 )
 
-root.set_window_geometry(
-    window_width=ROOT_WINDOW_WIDTH, window_height=ROOT_WINDOW_HEIGHT
-)
+root.set_window_geometry(window_width=ROOT_WINDOW_WIDTH, window_height=ROOT_WINDOW_HEIGHT)
 
 if __name__ == "__main__":
     root.window.mainloop()

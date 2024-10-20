@@ -1,18 +1,20 @@
-import customtkinter as ctk
 import json
 import threading
 from tkinter import filedialog
+
+import customtkinter as ctk
 from constants import (
     CANCEL_BUTTON_COLOR,
     CANCEL_BUTTON_HOVER_COLOR,
     CONTINUE_BUTTON_COLOR,
     CONTINUE_BUTTON_HOVER_COLOR,
+    LABEL_CACHE,
+    PROGRESSBAR_WIDTH,
     WARNING_WINDOW_HEIGHT,
     WARNING_WINDOW_WIDTH,
-    PROGRESSBAR_WIDTH,
-    LABEL_CACHE,
 )
-from objects import Window, CancelContinueBuilder
+from objects import CancelContinueBuilder, Window
+
 import backend
 
 
@@ -20,9 +22,7 @@ def open_warning_window(root, cache, trigger_object):
     trigger_object.button.configure(state="disabled")
 
     warning = Window.create_window(window=ctk.CTkToplevel(root.window), title="Warning")
-    warning.window.protocol(
-        "WM_DELETE_WINDOW", lambda: on_closing(warning, trigger_object)
-    )
+    warning.window.protocol("WM_DELETE_WINDOW", lambda: on_closing(warning, trigger_object))
 
     if cache["origin"] == "No origin folder selected.":
         label = ctk.CTkLabel(
@@ -53,9 +53,7 @@ def open_warning_window(root, cache, trigger_object):
             .build_frame()
             .build_button(
                 text="Cancel",
-                command=lambda: cancel_action(
-                    warning=warning, trigger_object=trigger_object
-                ),
+                command=lambda: cancel_action(warning=warning, trigger_object=trigger_object),
                 padx=5,
                 width=80,
                 fg_color=CANCEL_BUTTON_COLOR,
@@ -93,9 +91,7 @@ def cancel_action(warning, trigger_object):
     warning.window.destroy()
 
 
-def continue_action(
-    warning_window, trigger_object, origin_directory, destination_directory
-):
+def continue_action(warning_window, trigger_object, origin_directory, destination_directory):
     warning_window.destroy()
 
     thread = threading.Thread(
