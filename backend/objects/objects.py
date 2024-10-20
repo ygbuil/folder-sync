@@ -1,7 +1,7 @@
 import os
 import shutil
 import time
-
+from pathlib import Path
 from loguru import logger
 
 from backend.objects.constants import (
@@ -43,12 +43,10 @@ def get_sub_paths(path, edit_time_sensitive=False) -> dict[str, list]:
     path_dirs.sort()
     path_files.sort()
 
-    sub_paths = {"dirs": path_dirs, "files": path_files}
-
-    return sub_paths
+    return {"dirs": path_dirs, "files": path_files}
 
 
-def get_paths_paths_to_delete(origin_sub_paths, destination_sub_paths) -> dict[str, list]:
+def get_paths_paths_to_delete(origin_sub_paths: list, destination_sub_paths: list) -> dict[str, list]:
     """Gets directories and files present in clone but missing in master, since
     they will need to be deleted from clone.
 
@@ -74,12 +72,10 @@ def get_paths_paths_to_delete(origin_sub_paths, destination_sub_paths) -> dict[s
     # sort in order to avoid deleting a root folder before a sub folder
     dirs_to_delete.sort(reverse=True)
 
-    paths_to_delete = {"dirs": dirs_to_delete, "files": files_to_delete}
-
-    return paths_to_delete
+    return {"dirs": dirs_to_delete, "files": files_to_delete}
 
 
-def delete_paths(paths_to_delete, destination_root_path, trigger_object) -> None:
+def delete_paths(paths_to_delete: dict, destination_root_path: Path, trigger_object) -> None:
     """Executes commands to delete the paths_to_delete.
 
     Parameters
@@ -134,7 +130,7 @@ def delete_paths(paths_to_delete, destination_root_path, trigger_object) -> None
         )
 
 
-def get_paths_to_copy(origin_sub_paths, destination_sub_paths) -> dict[str, list]:
+def get_paths_to_copy(origin_sub_paths: list, destination_sub_paths: list) -> dict[str, list]:
     """Gets directories and files present in master but missing in clone, since
     they will need to be copied from master to clone.
 
@@ -164,7 +160,7 @@ def get_paths_to_copy(origin_sub_paths, destination_sub_paths) -> dict[str, list
     return paths_to_copy
 
 
-def copy_paths(origin_root_path, destination_root_path, paths_to_copy, trigger_object) -> None:
+def copy_paths(origin_root_path: Path, destination_root_path: Path, paths_to_copy: list, trigger_object) -> None:
     """Executes commands to copy the paths_to_copy.
 
     Parameters
@@ -219,7 +215,7 @@ def copy_paths(origin_root_path, destination_root_path, paths_to_copy, trigger_o
         )
 
 
-def test_if_sucessful(origin_root_path, destination_root_path):
+def test_if_sucessful(origin_root_path: Path, destination_root_path: Path) -> tuple[int, str]:
     """Checks if the process went successfully, that is, master and clone folders
     are equal after all the change.
 
