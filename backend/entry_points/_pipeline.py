@@ -11,11 +11,11 @@ from backend import objects
 @click.option("--origin-root-path")
 @click.option("--destination-root-path")
 def pipeline(origin_root_path: str, destination_root_path: str) -> str:
-    """Entry point to say hello.
+    """Entry point for _pipeline().
 
-    :param name: Name.
-    :param surname: Surname.
-    :return: Greet.
+    :param origin_root_path: Root path of the master folder.
+    :param destination_root_path: Root path of the clone folder.
+    :returns: None.
     """
     return _pipeline(origin_root_path, destination_root_path)
 
@@ -24,20 +24,12 @@ def _pipeline(
     origin_root_path: str,
     destination_root_path: str,
 ) -> tuple[Literal[0, 1], str]:
-    """Entire pipeline. Checks differences between master and clone folder and
+    """Entire pipeline. Checks differences between master and clone folders and
     sets clone to be in the same status as master.
 
-    Parameters
-    ----------
-    origin_root_path : str
-        Root path of master folder.
-    destination_root_path : str
-        Root path of clone folder.
-
-    Returns
-    -------
-    None.
-
+    :param origin_root_path: Root path of the master folder.
+    :param destination_root_path: Root path of the clone folder.
+    :returns: None.
     """
     origin_root_path, destination_root_path = (
         Path(origin_root_path),

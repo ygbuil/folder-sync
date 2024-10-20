@@ -1,3 +1,4 @@
+"""Unit testing module."""
 import os
 
 import pytest
@@ -16,6 +17,12 @@ import pytest
     ],
 )
 def test_origin_folder_creation(origin_folder: str, subsequent_dir: list) -> None:
+    """Test the creation of origin folder.
+
+    :param origin_folder: Root path of the origin folder.
+    :param subsequent_dir: Folder structure inside origin_folder.
+    :returns: None.
+    """
     assert os.path.exists(os.path.join(origin_folder, *subsequent_dir))
 
 
@@ -33,4 +40,10 @@ def test_origin_folder_creation(origin_folder: str, subsequent_dir: list) -> Non
     ],
 )
 def test_destination_folder_creation(destination_folder: str, subsequent_dir: list) -> None:
+    """Test the creation of destination folder.
+
+    :param destination_folder: Root path of the destination folder.
+    :param subsequent_dir: Folder structure inside destination_folder.
+    :returns: None.
+    """
     assert os.path.exists(os.path.join(destination_folder, *subsequent_dir))
