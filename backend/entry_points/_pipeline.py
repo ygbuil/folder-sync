@@ -2,8 +2,11 @@
 from pathlib import Path
 from typing import Literal
 import click
+from loguru import logger
+
 # local libraries
 from backend import objects
+
 
 @click.command()
 @click.option("--origin-root-path")
@@ -17,7 +20,10 @@ def pipeline(origin_root_path: str, destination_root_path: str) -> str:
     """
     return _pipeline(origin_root_path, destination_root_path)
 
-def _pipeline(origin_root_path, destination_root_path, trigger_object=None) -> tuple[Literal[0, 1], str]:
+
+def _pipeline(
+    origin_root_path, destination_root_path, trigger_object=None
+) -> tuple[Literal[0, 1], str]:
     """
     Entire pipeline. Checks differences between master and clone folder and
     sets clone to be in the same status as master.
@@ -78,5 +84,7 @@ def _pipeline(origin_root_path, destination_root_path, trigger_object=None) -> t
     # fake finish for the progress bar
     if trigger_object:
         objects.update_progress_bar_fake(steps=9, trigger_object=trigger_object)
+
+    logger.info(f"{exit_code}. {exit_message}")
 
     return exit_code, exit_message
