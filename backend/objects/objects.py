@@ -1,5 +1,4 @@
 """Objects."""
-import os
 import shutil
 from pathlib import Path
 
@@ -65,7 +64,7 @@ def delete_paths(paths_to_delete: dict, destination_root_path: Path) -> None:
     """
     # delete files
     for f in paths_to_delete["files"]:
-        os.remove(destination_root_path / f)
+        Path.unlink(destination_root_path / f)
         logger.info(f"Deleted file: {destination_root_path / f}")
 
     # delete directories
@@ -102,7 +101,7 @@ def copy_paths(origin_root_path: Path, destination_root_path: Path, paths_to_cop
     :returns: None.
     """
     for d in paths_to_copy["dirs"]:
-        os.makedirs(destination_root_path / d)
+        Path.mkdir(destination_root_path / d, parents=True)
         logger.info(f"Created directory: {d}")
 
     for f in paths_to_copy["files"]:
