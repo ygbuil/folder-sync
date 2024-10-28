@@ -5,7 +5,7 @@
             "name": "pipeline",
             "type": "debugpy",
             "request": "launch",
-            "program": "folder-sync",
+            "program": "/Users/ygbuil/Library/Caches/pypoetry/virtualenvs/folder-sync-02-YVhB6-py3.12/bin/folder-sync",
             "justMyCode": false,
             "args": [
                 "pipeline",
