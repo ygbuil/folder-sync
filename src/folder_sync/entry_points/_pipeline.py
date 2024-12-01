@@ -13,9 +13,12 @@ from src.folder_sync import objects
 def pipeline(origin_root_path: str, destination_root_path: str) -> str:
     """Entry point for _pipeline().
 
-    :param origin_root_path: Root path of the origin folder.
-    :param destination_root_path: Root path of the destination folder.
-    :returns: None.
+    Args:
+        origin_root_path: Root path of the origin folder.
+        destination_root_path: Root path of the destination folder.
+
+    Returns:
+        None.
     """
     return _pipeline(origin_root_path, destination_root_path)
 
@@ -27,9 +30,12 @@ def _pipeline(
     """Entire pipeline. Checks differences between origin and destination folders and
     sets destination to be in the same status as origin.
 
-    :param origin_root_path: Root path of the origin folder.
-    :param destination_root_path: Root path of the destination folder.
-    :returns: None.
+    Args:
+        origin_root_path: Root path of the origin folder.
+        destination_root_path: Root path of the destination folder.
+
+    Returns:
+        None.
     """
     origin_root_path, destination_root_path = (
         Path(origin_root_path),

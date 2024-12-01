@@ -9,9 +9,12 @@ from loguru import logger
 def get_sub_paths(path: Path, edit_time_sensitive: bool = False) -> dict[str, list]:  # noqa: FBT001, FBT002
     """Get all the sub paths inside path.
 
-    :param path: Path to search for sub paths.
-    :param edit_time_sensitive: Whether to take into account the file edit time or not.
-    :returns: Dictionary containing sub paths for both directories and files in the path.
+    Args:
+        path: Path to search for sub paths.
+        edit_time_sensitive: Whether to take into account the file edit time or not.
+
+    Returns:
+        Dictionary containing sub paths for both directories and files in the path.
     """
     dirs = []
     files = []
@@ -41,9 +44,12 @@ def get_paths_to_delete(
     """Get directories and files present in destination but missing in origin, since
     they will need to be deleted from destination.
 
-    :param origin_child_paths: Sub paths of origin.
-    :param destination_child_paths: Sub paths of destination.
-    :returns: Dictionary containing the directories and files to delete.
+    Args:
+        origin_child_paths: Sub paths of origin.
+        destination_child_paths: Sub paths of destination.
+
+    Returns:
+        Dictionary containing the directories and files to delete.
     """
     dirs_to_delete = [
         x for x in destination_child_paths["dirs"] if x not in origin_child_paths["dirs"]
@@ -61,9 +67,12 @@ def get_paths_to_delete(
 def delete_paths(paths_to_delete: dict, destination_root_path: Path) -> None:
     """Execute commands to delete the paths_to_delete.
 
-    :param paths_to_delete: Dictionary containing the directories and files to delete.
-    :param destination_root_path: Root path of the destination folder.
-    :returns: None.
+    Args:
+        paths_to_delete: Dictionary containing the directories and files to delete.
+        destination_root_path: Root path of the destination folder.
+
+    Returns:
+        None.
     """
     for f in paths_to_delete["files"]:
         Path.unlink(destination_root_path / f)
@@ -78,9 +87,12 @@ def get_paths_to_copy(origin_child_paths: list, destination_child_paths: list) -
     """Get directories and files present in origin but missing in destination, since
     they will need to be copied from origin to destination.
 
-    :param origin_child_paths: Sub paths of origin.
-    :param destination_child_paths: Sub paths of destination.
-    :returns: Dictionary containing the directories and files to copy.
+    Args:
+        origin_child_paths: Sub paths of origin.
+        destination_child_paths: Sub paths of destination.
+
+    Returns:
+        Dictionary containing the directories and files to copy.
     """
     dirs_to_copy = [
         x for x in origin_child_paths["dirs"] if x not in destination_child_paths["dirs"]
@@ -98,10 +110,13 @@ def get_paths_to_copy(origin_child_paths: list, destination_child_paths: list) -
 def copy_paths(origin_root_path: Path, destination_root_path: Path, paths_to_copy: list) -> None:
     """Execute commands to copy the paths_to_copy.
 
-    :param origin_root_path: Root path of the origin folder.
-    :param destination_root_path: Root path of the destination folder.
-    :param paths_to_copy: Dictionary containing the directories and files to copy.
-    :returns: None.
+    Args:
+        origin_root_path: Root path of the origin folder.
+        destination_root_path: Root path of the destination folder.
+        paths_to_copy: Dictionary containing the directories and files to copy.
+
+    Returns:
+        None.
     """
     for d in paths_to_copy["dirs"]:
         Path.mkdir(destination_root_path / d, parents=True)
@@ -116,9 +131,12 @@ def test_if_sucessful(origin_root_path: Path, destination_root_path: Path) -> tu
     """Checks if the process went successfully, meaning the origin and destination folders
     are equal after all the changes.
 
-    :param origin_root_path: Root path of the origin folder.
-    :param destination_root_path: Root path of the destination folder.
-    :returns: None.
+    Args:
+        origin_root_path: Root path of the origin folder.
+        destination_root_path: Root path of the destination folder.
+
+    Returns:
+        None.
     """
     origin_child_paths = get_sub_paths(path=origin_root_path)
     destination_child_paths = get_sub_paths(path=destination_root_path)

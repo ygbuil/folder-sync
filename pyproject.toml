@@ -23,13 +23,11 @@ package = true
 
 [tool.ruff]
 line-length = 100
-lint.select = [
-    "F", "E", "W", "ARG", "C90", "I", "N", "D", "UP", "YTT", "ANN", "S", "BLE", "FBT", "B", "A",
-    "COM", "C40", "DTZ", "T10", "DJ", "EXE", "ISC", "ICN", "G", "INP", "PIE", "T20", "PYI", "PT",
-    "Q", "RSE", "RET", "SLF", "SIM", "TID", "TCH", "ARG", "PTH", "ERA", "PD", "PGH", "PL", "TRY",
-    "NPY", "RUF"
-]
+lint.select = ["ALL"]
 lint.ignore = [
-    "PD901", "ANN002", "ANN003", "TRY002", "TRY003", "BLE001", "PLR0913", "S101", "ANN401", "D205",
-    "D402"
+    "ANN002", "ANN003", "ANN401", "COM812", "D203", "D205", "D213", "D402", "EXE002", "FA102",
+    "ISC001", "PD901", "PGH003", "PLR0913", "S101", "TRY003"
 ]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
