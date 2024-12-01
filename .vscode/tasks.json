@@ -4,8 +4,10 @@
         {
             "label": "pipeline",
             "type": "shell",
-            "command": "folder-sync",
+            "command": "uv",
             "args": [
+                "run",
+                "folder-sync",
                 "pipeline",
                 "--origin-root-path", "/Users/ygbuil/Documents/origin",
                 "--destination-root-path", "/Volumes/destination",

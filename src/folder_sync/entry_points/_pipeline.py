@@ -4,7 +4,7 @@ from typing import Literal
 import click
 from loguru import logger
 
-from folder_sync import objects
+from src.folder_sync import objects
 
 
 @click.command()

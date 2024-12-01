@@ -1,22 +1,25 @@
-[tool.poetry]
+[project]
 name = "folder-sync"
 version = "0.1.0"
 description = "Track differences between 2 folder and create a backup."
-authors = ["Llorenç Buil Fustagueras"]
 readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "customtkinter>=5.2.1",
+    "pre-commit>=3.6.0",
+    "pillow>=10.1.0",
+    "pytest>=7.4.3",
+    "ruff>=0.1.8",
+    "click>=8.1.7",
+    "loguru>=0.7.2",
+]
 
-[tool.poetry.scripts]
+
+[project.scripts]
 folder-sync = "folder_sync.__main__:_main"
 
-[tool.poetry.dependencies]
-python = "^3.11.6"
-customtkinter = "^5.2.1"
-pre-commit = "^3.6.0"
-pillow = "^10.1.0"
-pytest = "^7.4.3"
-ruff = "^0.1.8"
-click = "^8.1.7"
-loguru = "^0.7.2"
+[tool.uv]
+package = true
 
 [tool.ruff]
 line-length = 100
@@ -30,7 +33,3 @@ lint.ignore = [
     "PD901", "ANN002", "ANN003", "TRY002", "TRY003", "BLE001", "PLR0913", "S101", "ANN401", "D205",
     "D402"
 ]
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"

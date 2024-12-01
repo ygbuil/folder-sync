@@ -1,10 +1,11 @@
 """Fixtures for testing."""
+
 from pathlib import Path
 
 import pytest
 
 
-@pytest.fixture()
+@pytest.fixture
 def origin_folder(tmpdir: str) -> str:
     """Create folder structure for origin directory.
 
@@ -25,7 +26,7 @@ def origin_folder(tmpdir: str) -> str:
     return str(tmpdir.join("origin"))
 
 
-@pytest.fixture()
+@pytest.fixture
 def destination_folder(tmpdir: str) -> str:
     """Create folder structure for destination directory.
 
