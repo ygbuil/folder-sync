@@ -1,8 +1,10 @@
 """Unit testing module."""
 
-import os
+from pathlib import Path
 
 import pytest
+
+from src.folder_sync.entry_points._pipeline import _pipeline
 
 
 @pytest.mark.parametrize(
@@ -20,11 +22,14 @@ import pytest
 def test_origin_folder_creation(origin_folder: str, subsequent_dir: list) -> None:
     """Test the creation of origin folder.
 
-    :param origin_folder: Root path of the origin folder.
-    :param subsequent_dir: Folder structure inside origin_folder.
-    :returns: None.
+    Args:
+        origin_folder: Root path of the origin folder.
+        subsequent_dir: Folder structure inside origin_folder.
+
+    Returns:
+        None
     """
-    assert os.path.exists(os.path.join(origin_folder, *subsequent_dir))  # noqa: PTH110, PTH118
+    assert (Path(origin_folder) / Path(*subsequent_dir)).exists()
 
 
 @pytest.mark.parametrize(
@@ -43,8 +48,33 @@ def test_origin_folder_creation(origin_folder: str, subsequent_dir: list) -> Non
 def test_destination_folder_creation(destination_folder: str, subsequent_dir: list) -> None:
     """Test the creation of destination folder.
 
-    :param destination_folder: Root path of the destination folder.
-    :param subsequent_dir: Folder structure inside destination_folder.
-    :returns: None.
+    Args:
+        destination_folder: Root path of the destination folder.
+        subsequent_dir: Folder structure inside destination_folder.
+
+    Returns:
+        None
     """
-    assert os.path.exists(os.path.join(destination_folder, *subsequent_dir))  # noqa: PTH110, PTH118
+    assert (Path(destination_folder) / Path(*subsequent_dir)).exists()
+
+
+def test_last_modified_change(origin_folder: str, destination_folder: str) -> None:
+    """Test the last modified change of a file.
+
+    Args:
+        origin_folder: Root path of the origin folder.
+        destination_folder: Root path of the destination folder.
+
+    Returns:
+        None
+    """
+    with Path.open(Path(origin_folder) / "file_1.txt", "w") as file:
+        file.write("b")
+
+    with Path.open(Path(destination_folder) / "file_1.txt", "r") as file:
+        assert file.read() == "a"
+
+    _pipeline(origin_folder, destination_folder)
+
+    with Path.open(Path(destination_folder) / "file_1.txt", "r") as file:
+        assert file.read() == "b"
