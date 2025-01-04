@@ -9,8 +9,8 @@
             "justMyCode": false,
             "args": [
                 "pipeline",
-                "--origin-root-path", "/Users/ygbuil/Documents/origin",
-                "--destination-root-path", "/Volumes/destination",
+                "--origin-root-path", "/Users/ygbuil/Documents/main",
+                "--destination-root-path", "/Volumes/hdd_1",
             ],
         }
     ],

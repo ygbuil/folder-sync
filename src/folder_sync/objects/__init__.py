@@ -1,6 +1,6 @@
 """__init__.py for objects module."""
 
-from .objects import (
+from ._objects import (
     copy_paths,
     delete_paths,
     get_paths_to_copy,

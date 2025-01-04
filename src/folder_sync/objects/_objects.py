@@ -5,29 +5,80 @@ from pathlib import Path
 
 from loguru import logger
 
+FILES_TO_IGNORE = [
+    # macOS system files and directories
+    ".DS_Store",
+    ".Trash",
+    ".Trashes",
+    ".Spotlight-V100",
+    ".fseventsd",
+    ".apdisk",
+    ".TemporaryItems",
+    ".vol",
+    ".AppleDouble",
+    "._",
+    ".AppleDesktop",
+    "._filename",
+    ".metadata_never_index",  # Disables Spotlight indexing
+    ".com.apple.timemachine.donotpresent",  # Prevents Time Machine backups
+    ".com.apple.sparsebundle",  # Sparse bundle disk images
+    ".hidden",  # Hides files from Finder
+    ".VolumeIcon.icns",  # Custom volume icon
+    # Windows system files and directories
+    "desktop.ini",
+    "Thumbs.db",
+    "$Recycle.Bin",
+    "System Volume Information",
+    "pagefile.sys",
+    "hiberfil.sys",
+    "swapfile.sys",
+    "Windows.old",
+    "$WINDOWS.~BT",
+    "$WINDOWS.~WS",
+    "ntuser.dat",
+    "ntuser.ini",
+    "bootmgr",  # Windows boot manager file
+    "BOOTNXT",  # Next boot configuration file
+    "Recovery",  # Recovery partition files
+    "hiberfil.sys",  # Hibernation file
+    "MSOCache",  # Microsoft Office cache
+    "PerfLogs",  # Performance logs directory
+    "ProgramData",  # Hidden by default on system drive
+    # Cross-platform (macOS and Windows) or temporary files
+    "._filename",  # macOS resource fork files on non-HFS+ systems
+    ".Trash-*",  # External drives' trash directories
+    ".~lock",  # Temporary lock files (e.g., from LibreOffice)
+    ".sync",  # Resilio Sync or similar applications
+    ".picasa.ini",  # Metadata from Picasa
+    ".thumbs",  # Thumbnail cache from some applications
+    "~$filename",  # Temporary files from Microsoft Office
+]
 
-def get_sub_paths(path: Path, edit_time_sensitive: bool = False) -> dict[str, list]:  # noqa: FBT001, FBT002
+
+def get_sub_paths(root_path: Path, by_last_modified: bool = True) -> dict[str, list]:  # noqa: FBT001, FBT002
     """Get all the sub paths inside path.
 
     Args:
-        path: Path to search for sub paths.
-        edit_time_sensitive: Whether to take into account the file edit time or not.
+        root_path: Path to search for sub paths.
+        by_last_modified: Whether to take into account the last modified date of the files to detect
+        differences.
 
     Returns:
-        Dictionary containing sub paths for both directories and files in the path.
+        Dictionary containing sub paths for both directories and files in the root_path.
     """
     dirs = []
     files = []
 
-    for p in path.glob("**/*"):
-        if not p.name.startswith("."):
-            if p.is_dir():
-                dirs.append(p.relative_to(path))
-            elif p.is_file():
+    for complete_path in root_path.glob("**/*"):
+        if not any(ignore_file in str(complete_path) for ignore_file in FILES_TO_IGNORE):
+            if complete_path.is_dir():
+                dirs.append(complete_path.relative_to(root_path))
+            elif complete_path.is_file():
                 files.append(
-                    (p.relative_to(path), p.stat().st_mtime)
-                    if edit_time_sensitive
-                    else (p.relative_to(path), None),
+                    (
+                        complete_path.relative_to(root_path),
+                        complete_path.stat().st_mtime if by_last_modified else None,
+                    )
                 )
 
     # sort in order to avoid performing further operations on a child folder before a parent folder
@@ -136,10 +187,10 @@ def test_if_sucessful(origin_root_path: Path, destination_root_path: Path) -> tu
         destination_root_path: Root path of the destination folder.
 
     Returns:
-        None.
+        Success status.
     """
-    origin_child_paths = get_sub_paths(path=origin_root_path)
-    destination_child_paths = get_sub_paths(path=destination_root_path)
+    origin_child_paths = get_sub_paths(root_path=origin_root_path)
+    destination_child_paths = get_sub_paths(root_path=destination_root_path)
 
     if origin_child_paths == destination_child_paths:
         return 0, "Process successful, both folders are now equal!"

@@ -4,7 +4,8 @@ from typing import Literal
 import click
 from loguru import logger
 
-from src.folder_sync import objects
+from folder_sync import objects
+from folder_sync.exceptions import UnexistingFolderError
 
 
 @click.command()
@@ -42,9 +43,17 @@ def _pipeline(
         Path(destination_root_path),
     )
 
+    if not origin_root_path.exists():
+        msg = f"{origin_root_path} folder does not exist."
+        raise UnexistingFolderError(msg)
+
+    if not destination_root_path.exists():
+        msg = f"{destination_root_path} folder does not exist."
+        raise UnexistingFolderError(msg)
+
     origin_child_paths, destination_child_paths = (
-        objects.get_sub_paths(path=origin_root_path),
-        objects.get_sub_paths(path=destination_root_path),
+        objects.get_sub_paths(root_path=origin_root_path),
+        objects.get_sub_paths(root_path=destination_root_path),
     )
 
     # delete destination files not present in origin
@@ -58,7 +67,7 @@ def _pipeline(
     )
 
     # copy files present in origin but not in destination
-    destination_child_paths = objects.get_sub_paths(path=destination_root_path)
+    destination_child_paths = objects.get_sub_paths(root_path=destination_root_path)
     paths_to_copy = objects.get_paths_to_copy(
         origin_child_paths=origin_child_paths,
         destination_child_paths=destination_child_paths,
