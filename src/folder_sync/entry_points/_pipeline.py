@@ -43,13 +43,10 @@ def _pipeline(
         Path(destination_root_path),
     )
 
-    if not origin_root_path.exists():
-        msg = f"{origin_root_path} folder does not exist."
-        raise UnexistingFolderError(msg)
-
-    if not destination_root_path.exists():
-        msg = f"{destination_root_path} folder does not exist."
-        raise UnexistingFolderError(msg)
+    for root_path in [origin_root_path, destination_root_path]:
+        if not root_path.exists():
+            msg = f"{root_path} folder does not exist."
+            raise UnexistingFolderError(msg)
 
     origin_child_paths, destination_child_paths = (
         objects.get_sub_paths(root_path=origin_root_path),
