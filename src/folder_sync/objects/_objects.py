@@ -2,6 +2,7 @@
 
 import shutil
 from pathlib import Path
+from typing import Literal
 
 from loguru import logger
 
@@ -185,7 +186,9 @@ def copy_paths(
         logger.info(f"Copied file: {f}")
 
 
-def test_if_sucessful(origin_root_path: Path, destination_root_path: Path) -> tuple[int, str]:
+def test_if_sucessful(
+    origin_root_path: Path, destination_root_path: Path
+) -> tuple[Literal[0, 1], str]:
     """Checks if the process went successfully, meaning the origin and destination folders
     are equal after all the changes.
 
