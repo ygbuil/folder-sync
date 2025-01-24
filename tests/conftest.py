@@ -1,6 +1,7 @@
 """Fixtures for testing."""
 
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -24,7 +25,7 @@ def origin_folder(tmpdir: str) -> str:
         },
     }
 
-    _create_structure(str(tmpdir), structure)
+    _create_structure(Path(tmpdir), structure)
 
     return str(tmpdir.join("origin"))
 
@@ -49,12 +50,12 @@ def destination_folder(tmpdir: str) -> str:
         },
     }
 
-    _create_structure(str(tmpdir), structure)
+    _create_structure(Path(tmpdir), structure)
 
     return str(tmpdir.join("destination"))
 
 
-def _create_structure(base_path: str, items: dict) -> None:
+def _create_structure(base_path: Path, items: dict[str, Any]) -> None:
     """Create file structure for testing.
 
     Args:
@@ -65,7 +66,7 @@ def _create_structure(base_path: str, items: dict) -> None:
         None.
     """
     for name, content in items.items():
-        path = Path(base_path) / Path(name)
+        path = base_path / name
         if isinstance(content, dict):
             Path.mkdir(path)
             _create_structure(path, content)

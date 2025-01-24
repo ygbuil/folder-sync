@@ -11,7 +11,7 @@ from folder_sync.exceptions import UnexistingFolderError
 @click.command()
 @click.option("--origin-root-path")
 @click.option("--destination-root-path")
-def pipeline(origin_root_path: str, destination_root_path: str) -> str:
+def pipeline(origin_root_path: str, destination_root_path: str) -> tuple[Literal[0, 1], str]:
     """Entry point for _pipeline().
 
     Args:
@@ -21,12 +21,12 @@ def pipeline(origin_root_path: str, destination_root_path: str) -> str:
     Returns:
         None.
     """
-    return _pipeline(origin_root_path, destination_root_path)
+    return _pipeline(Path(origin_root_path), Path(destination_root_path))
 
 
 def _pipeline(
-    origin_root_path: str,
-    destination_root_path: str,
+    origin_root_path: Path,
+    destination_root_path: Path,
 ) -> tuple[Literal[0, 1], str]:
     """Entire pipeline. Checks differences between origin and destination folders and
     sets destination to be in the same status as origin.
@@ -38,11 +38,6 @@ def _pipeline(
     Returns:
         None.
     """
-    origin_root_path, destination_root_path = (
-        Path(origin_root_path),
-        Path(destination_root_path),
-    )
-
     for root_path in [origin_root_path, destination_root_path]:
         if not root_path.exists():
             msg = f"{root_path} folder does not exist."

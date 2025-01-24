@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from src.folder_sync.entry_points._pipeline import _pipeline
+from folder_sync.entry_points._pipeline import _pipeline
 
 
 @pytest.mark.parametrize(
@@ -19,7 +19,7 @@ from src.folder_sync.entry_points._pipeline import _pipeline
         ["folder_2"],
     ],
 )
-def test_origin_folder_creation(origin_folder: str, subsequent_dir: list) -> None:
+def test_origin_folder_creation(origin_folder: str, subsequent_dir: list[str]) -> None:
     """Test the creation of origin folder.
 
     Args:
@@ -45,7 +45,7 @@ def test_origin_folder_creation(origin_folder: str, subsequent_dir: list) -> Non
         ["folder_to_delete_1"],
     ],
 )
-def test_destination_folder_creation(destination_folder: str, subsequent_dir: list) -> None:
+def test_destination_folder_creation(destination_folder: str, subsequent_dir: list[str]) -> None:
     """Test the creation of destination folder.
 
     Args:
@@ -74,7 +74,7 @@ def test_last_modified_change(origin_folder: str, destination_folder: str) -> No
     with Path.open(Path(destination_folder) / "file_1.txt", "r") as file:
         assert file.read() == "a"
 
-    _pipeline(origin_folder, destination_folder)
+    _pipeline(Path(origin_folder), Path(destination_folder))
 
     with Path.open(Path(destination_folder) / "file_1.txt", "r") as file:
         assert file.read() == "b"
