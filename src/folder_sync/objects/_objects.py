@@ -58,7 +58,7 @@ FILES_TO_IGNORE = [
 
 def get_sub_paths(
     root_path: Path, *, by_last_modified: bool = True
-) -> dict[str, list[Path] | list[tuple[Path, None | float]]]:
+) -> dict[str, list[tuple[Path, None]] | list[tuple[Path, None | float]]]:
     """Get all the sub paths inside path.
 
     Args:
@@ -75,7 +75,7 @@ def get_sub_paths(
     for complete_path in root_path.glob("**/*"):
         if not any(ignore_file in str(complete_path) for ignore_file in FILES_TO_IGNORE):
             if complete_path.is_dir():
-                dirs.append(complete_path.relative_to(root_path))
+                dirs.append((complete_path.relative_to(root_path), None))
             elif complete_path.is_file():
                 files.append(
                     (
@@ -92,8 +92,8 @@ def get_sub_paths(
 
 
 def get_paths_to_delete(
-    origin_child_paths: dict[str, list[Path] | list[tuple[Path, None | float]]],
-    destination_child_paths: dict[str, list[Path] | list[tuple[Path, None | float]]],
+    origin_child_paths: dict[str, list[tuple[Path, None]] | list[tuple[Path, None | float]]],
+    destination_child_paths: dict[str, list[tuple[Path, None]] | list[tuple[Path, None | float]]],
 ) -> dict[str, list[Path]]:
     """Get directories and files present in destination but missing in origin, since
     they will need to be deleted from destination.
@@ -106,7 +106,7 @@ def get_paths_to_delete(
         Dictionary containing the directories and files to delete.
     """
     dirs_to_delete: list[Path] = [
-        x for x in destination_child_paths["dirs"] if x not in origin_child_paths["dirs"]
+        x[0] for x in destination_child_paths["dirs"] if x not in origin_child_paths["dirs"]
     ]
     files_to_delete: list[Path] = [
         x[0] for x in destination_child_paths["files"] if x not in origin_child_paths["files"]
@@ -138,8 +138,8 @@ def delete_paths(paths_to_delete: dict[str, list[Path]], destination_root_path: 
 
 
 def get_paths_to_copy(
-    origin_child_paths: dict[str, list[Path] | list[tuple[Path, None | float]]],
-    destination_child_paths: dict[str, list[Path] | list[tuple[Path, None | float]]],
+    origin_child_paths: dict[str, list[tuple[Path, None]] | list[tuple[Path, None | float]]],
+    destination_child_paths: dict[str, list[tuple[Path, None]] | list[tuple[Path, None | float]]],
 ) -> dict[str, list[Path]]:
     """Get directories and files present in origin but missing in destination, since
     they will need to be copied from origin to destination.
@@ -152,7 +152,7 @@ def get_paths_to_copy(
         Dictionary containing the directories and files to copy.
     """
     dirs_to_copy = [
-        x for x in origin_child_paths["dirs"] if x not in destination_child_paths["dirs"]
+        x[0] for x in origin_child_paths["dirs"] if x not in destination_child_paths["dirs"]
     ]
     files_to_copy = [
         x[0] for x in origin_child_paths["files"] if x not in destination_child_paths["files"]
