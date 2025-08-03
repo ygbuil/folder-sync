@@ -10,8 +10,8 @@ from folder_sync.exceptions import UnexistingFolderError
 @click.command()
 @click.option("--origin-root-path")
 @click.option("--destination-root-path")
-def pipeline(origin_root_path: str, destination_root_path: str) -> None:
-    """Entry point for _pipeline().
+def sync(origin_root_path: str, destination_root_path: str) -> None:
+    """Entry point for _sync().
 
     Args:
         origin_root_path: Root path of the origin folder.
@@ -20,14 +20,14 @@ def pipeline(origin_root_path: str, destination_root_path: str) -> None:
     Returns:
         None.
     """
-    _pipeline(Path(origin_root_path), Path(destination_root_path))
+    _sync(Path(origin_root_path), Path(destination_root_path))
 
 
-def _pipeline(
+def _sync(
     origin_root_path: Path,
     destination_root_path: Path,
 ) -> Literal[0, 1]:
-    """Entire pipeline. Checks differences between origin and destination folders and
+    """Entire sync. Checks differences between origin and destination folders and
     sets destination to be in the same status as origin.
 
     Args:

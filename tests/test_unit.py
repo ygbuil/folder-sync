@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from folder_sync.cli._pipeline import _pipeline
+from folder_sync.cli._sync import _sync
 
 
 @pytest.mark.parametrize(
@@ -74,7 +74,7 @@ def test_last_modified_change(origin_folder: str, destination_folder: str) -> No
     with Path.open(Path(destination_folder) / "file_1.txt", "r") as file:
         assert file.read() == "a"
 
-    _pipeline(Path(origin_folder), Path(destination_folder))
+    _sync(Path(origin_folder), Path(destination_folder))
 
     with Path.open(Path(destination_folder) / "file_1.txt", "r") as file:
         assert file.read() == "b"

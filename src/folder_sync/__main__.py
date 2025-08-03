@@ -16,7 +16,7 @@ def _main() -> None:
     def entry_point() -> None:
         """Entry point."""
 
-    for command in (cli.pipeline,):
+    for command in (cli.sync,):
         entry_point.add_command(command)
 
     entry_point()

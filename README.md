@@ -10,4 +10,4 @@ To use the project, follow these steps:
 
 2. Open the project and run `uv sync` to install dependencies in a virtual environment.
 
-3. Inside `.vscode/tasks.json`, provide your inputs and run the VSCode command `Tasks: Run Task -> pipeline`.
+3. Inside `.vscode/tasks.json`, provide your inputs and run the VSCode command `Tasks: Run Task -> Sync`.

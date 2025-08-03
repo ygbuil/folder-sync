@@ -2,13 +2,13 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "pipeline",
+            "label": "Sync",
             "type": "shell",
             "command": "uv",
             "args": [
                 "run",
                 "folder-sync",
-                "pipeline",
+                "sync",
                 "--origin-root-path", "/Users/ygbuil/Documents/main",
                 "--destination-root-path", "/Volumes/hdd_1",
             ],

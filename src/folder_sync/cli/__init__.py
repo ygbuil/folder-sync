@@ -1,5 +1,5 @@
 """Cli."""
 
-from ._pipeline import pipeline
+from ._sync import sync
 
-__all__ = ["pipeline"]
+__all__ = ["sync"]

@@ -2,13 +2,13 @@
     "version": "2.0.0",
     "configurations": [
         {
-            "name": "pipeline",
+            "name": "Sync",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/.venv/bin/folder-sync",
             "justMyCode": false,
             "args": [
-                "pipeline",
+                "sync",
                 "--origin-root-path", "/Users/ygbuil/Documents/main",
                 "--destination-root-path", "/Volumes/hdd_1",
             ],

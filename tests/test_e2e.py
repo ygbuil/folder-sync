@@ -2,11 +2,11 @@
 
 from pathlib import Path
 
-from folder_sync.cli._pipeline import _pipeline
+from folder_sync.cli._sync import _sync
 
 
-def test_pipeline(origin_folder: str, destination_folder: str) -> None:
-    """Entire pipeline. Checks differences between origin and destination folders and
+def test_sync(origin_folder: str, destination_folder: str) -> None:
+    """Entire sync. Checks differences between origin and destination folders and
     sets destination to be in the same status as origin.
 
     Args:
@@ -16,4 +16,4 @@ def test_pipeline(origin_folder: str, destination_folder: str) -> None:
     Returns:
         None
     """
-    assert _pipeline(Path(origin_folder), Path(destination_folder)) == 0
+    assert _sync(Path(origin_folder), Path(destination_folder)) == 0
