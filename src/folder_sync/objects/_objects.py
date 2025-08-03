@@ -186,9 +186,7 @@ def copy_paths(
         logger.info(f"Copied file: {f}")
 
 
-def test_if_sucessful(
-    origin_root_path: Path, destination_root_path: Path
-) -> tuple[Literal[0, 1], str]:
+def test_if_sucessful(origin_root_path: Path, destination_root_path: Path) -> Literal[0, 1]:
     """Checks if the process went successfully, meaning the origin and destination folders
     are equal after all the changes.
 
@@ -203,6 +201,8 @@ def test_if_sucessful(
     destination_child_paths = get_sub_paths(root_path=destination_root_path)
 
     if origin_child_paths == destination_child_paths:
-        return 0, "Process successful, both folders are now equal!"
+        logger.success("Process successful, both folders are now equal!")
+        return 0
 
-    return 1, "Something went wrong. Origin and destination folders are not equal."
+    logger.error("Something went wrong. Origin and destination folders are not equal.")
+    return 1

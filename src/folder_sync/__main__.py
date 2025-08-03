@@ -6,7 +6,7 @@ import sys
 import click
 
 sys.path.append(os.getcwd())  # noqa: PTH109
-from folder_sync import entry_points
+from folder_sync import cli
 
 
 def _main() -> None:
@@ -16,7 +16,7 @@ def _main() -> None:
     def entry_point() -> None:
         """Entry point."""
 
-    for command in (entry_points.pipeline,):
+    for command in (cli.pipeline,):
         entry_point.add_command(command)
 
     entry_point()

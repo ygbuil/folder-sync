@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from folder_sync.entry_points._pipeline import _pipeline
+from folder_sync.cli._pipeline import _pipeline
 
 
 def test_pipeline(origin_folder: str, destination_folder: str) -> None:
@@ -16,4 +16,4 @@ def test_pipeline(origin_folder: str, destination_folder: str) -> None:
     Returns:
         None
     """
-    assert _pipeline(Path(origin_folder), Path(destination_folder))[0] == 0
+    assert _pipeline(Path(origin_folder), Path(destination_folder)) == 0

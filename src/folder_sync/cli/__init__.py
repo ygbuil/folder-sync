@@ -1,4 +1,4 @@
-"""__init__.py for entry points."""
+"""Cli."""
 
 from ._pipeline import pipeline
 

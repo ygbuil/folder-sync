@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from folder_sync.entry_points._pipeline import _pipeline
+from folder_sync.cli._pipeline import _pipeline
 
 
 @pytest.mark.parametrize(
