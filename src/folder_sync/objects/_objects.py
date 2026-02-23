@@ -12,6 +12,7 @@ FILES_TO_IGNORE = [
     ".Trash",
     ".Trashes",
     ".Spotlight-V100",
+    ".DocumentRevisions-V100",
     ".fseventsd",
     ".apdisk",
     ".TemporaryItems",
