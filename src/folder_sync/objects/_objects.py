@@ -58,7 +58,9 @@ FILES_TO_IGNORE = [
 
 
 def get_sub_paths(
-    root_path: Path, *, by_last_modified: bool = True
+    root_path: Path,
+    *,
+    by_last_modified: bool = True,
 ) -> dict[str, list[tuple[Path, None]] | list[tuple[Path, None | float]]]:
     """Get all the sub paths inside path.
 
@@ -82,7 +84,7 @@ def get_sub_paths(
                     (
                         complete_path.relative_to(root_path),
                         complete_path.stat().st_mtime if by_last_modified else None,
-                    )
+                    ),
                 )
 
     # sort in order to avoid performing further operations on a child folder before a parent folder
@@ -166,7 +168,9 @@ def get_paths_to_copy(
 
 
 def copy_paths(
-    origin_root_path: Path, destination_root_path: Path, paths_to_copy: dict[str, list[Path]]
+    origin_root_path: Path,
+    destination_root_path: Path,
+    paths_to_copy: dict[str, list[Path]],
 ) -> None:
     """Execute commands to copy the paths_to_copy.
 
